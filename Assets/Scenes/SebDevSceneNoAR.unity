@@ -1134,12 +1134,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allNeededResources:
   - resourceType: 0
-    quantity: 15
+    quantity: 2
   - resourceType: 1
-    quantity: 25
-  - resourceType: 2
-    quantity: 10
+    quantity: 1
   currentlyStoredResources: []
+  damagesStepToLoseOneResource: 10
   ejectionPosition: {fileID: 1904638916}
   minimumEjectionForce: 4
   maximumEjectionForce: 6

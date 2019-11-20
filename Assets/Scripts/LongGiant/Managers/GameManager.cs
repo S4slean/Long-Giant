@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            giantConstruction.EjectRandomResource();
+            giantConstruction.ReceiveDamages(10);
         }
     }
 
