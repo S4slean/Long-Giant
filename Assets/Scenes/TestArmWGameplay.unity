@@ -127,6 +127,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1772147192650458, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
+      propertyPath: m_Name
+      value: ARCore Device
+      objectReference: {fileID: 0}
     - target: {fileID: 4442908887562770, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -171,10 +175,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1772147192650458, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
-      propertyPath: m_Name
-      value: ARCore Device
-      objectReference: {fileID: 0}
+    - target: {fileID: 27174091, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
+      propertyPath: go
+      value: 
+      objectReference: {fileID: 611733609121576623, guid: e550095d2faca8f42aab8b52a2d32ac7,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c10877f7cd5764de18d46d7b777d1faa, type: 3}
 --- !u!1 &1225799325
@@ -218,6 +223,9 @@ MonoBehaviour:
       prefab: {fileID: 649662642157550460, guid: 5b70586a8ddc24f49a57e4c26f5576e1,
         type: 3}
   giantConstruction: {fileID: 0}
+  allGameObjectsParent: {fileID: 0}
+  resourcesInformationsLibrary: {fileID: 11400000, guid: ae4515cd1637e394b986f91ccb57ba5f,
+    type: 2}
 --- !u!4 &1225799327
 Transform:
   m_ObjectHideFlags: 0
