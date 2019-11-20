@@ -19,6 +19,10 @@ public class PhysicalObjectScript : MonoBehaviour
     [SerializeField] float objectMass = 1;
     public float GetObjectMass { get { return objectMass; } }
 
+    [Header("Miscelaneous")]
+    [SerializeField] float minimumRotationSpeedOnThrow = 180;
+    [SerializeField] float maximumRotationSpeedOnThrow = 270;
+
     bool setedUp;
     public virtual void SetUp()
     {
@@ -47,7 +51,7 @@ public class PhysicalObjectScript : MonoBehaviour
             CheckForDestroy(collision.relativeVelocity.magnitude * objectMass);
     }
 
-    public bool CheckForDestroy(float speedForce)
+    public virtual bool CheckForDestroy(float speedForce)
     {
         if (!CanReceiveDamages)
             return false;
@@ -81,6 +85,7 @@ public class PhysicalObjectScript : MonoBehaviour
     public virtual void Throw(Vector3 velocity)
     {
         objectBody.AddForce(velocity, ForceMode.VelocityChange);
+        objectBody.AddTorque(Random.onUnitSphere * Random.Range(minimumRotationSpeedOnThrow, maximumRotationSpeedOnThrow));
     }
 }
 

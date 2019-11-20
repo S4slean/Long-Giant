@@ -19,7 +19,6 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
 
         foreach (ResourceWithQuantity resourceWithQuantity in allResourcesSpawnedOnDestroy)
         {
-            Debug.Log("Instantiate " + resourceWithQuantity.quantity + " of " + resourceWithQuantity.resourceType);
             resourcePrefab = GameManager.gameManager.ResourcesManager.GetResourcePrefab(resourceWithQuantity.resourceType);
 
             if (resourcePrefab == null)
