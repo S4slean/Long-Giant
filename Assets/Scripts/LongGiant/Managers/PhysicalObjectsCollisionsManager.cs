@@ -31,9 +31,9 @@ public class PhysicalObjectsCollisionsManager
         {
             PhysicalObjectsCollisionRequest newRequest = new PhysicalObjectsCollisionRequest();
             newRequest.hittingObject = hittingObject;
-            newRequest.hittingObjectMass = hittingObject.CanDealDamages ? hittingObject.GetObjectMass : 0;
+            newRequest.hittingObjectMass = hittingObject.CanDealDamages ? hittingObject.GetObjectDamagingMass : 0;
             newRequest.hitObject = hitObject;
-            newRequest.hitObjectMass = hitObject.CanDealDamages ? hitObject.GetObjectMass : 0;
+            newRequest.hitObjectMass = hitObject.CanDealDamages ? hitObject.GetObjectDamagingMass : 0;
             newRequest.relativeVelocity = relativeVelocity;
             occuringCollisionsRequests.Add(newRequest);
         }
