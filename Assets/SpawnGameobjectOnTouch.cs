@@ -42,8 +42,11 @@ public class SpawnGameobjectOnTouch : MonoBehaviour
         if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
         {
             GameObject newGo = Instantiate(go);
-            newGo.transform.position = hit.Pose.position;
-            newGo.transform.localScale *= 0.1f;
+
+            Vector3 position = hit.Pose.position;
+            position.Scale(transform.parent.localScale);
+
+            newGo.transform.position = position;
         }
     }
 }
