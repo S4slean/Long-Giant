@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(WigglyLine))]
 public class CameraArmPlacement : MonoBehaviour
 {
+    public Camera cam;
+
     public bool debug;
 
     public Vector3 start;
@@ -15,14 +16,11 @@ public class CameraArmPlacement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        wigglyLine = GetComponent<WigglyLine>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        wigglyLine.start = Camera.main.transform.TransformPoint(start);
-        wigglyLine.end = Camera.main.transform.TransformPoint(end);
     }
 
     private void OnDrawGizmos()
@@ -30,10 +28,10 @@ public class CameraArmPlacement : MonoBehaviour
         if (!debug) return;
 
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(Camera.main.transform.TransformPoint(start),.05f);
+        Gizmos.DrawSphere(cam.transform.TransformPoint(start),.01f);
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(Camera.main.transform.TransformPoint(end), .05f);
+        Gizmos.DrawSphere(cam.transform.TransformPoint(end), .01f);
         Gizmos.color = Color.white;
-        Gizmos.DrawLine(Camera.main.transform.TransformPoint(start), Camera.main.transform.TransformPoint(end));
+        Gizmos.DrawLine(cam.transform.TransformPoint(start), cam.transform.TransformPoint(end));
     }
 }
