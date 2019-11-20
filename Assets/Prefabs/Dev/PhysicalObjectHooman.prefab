@@ -108,8 +108,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 0}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 25
-  objectMass: 0.1
+  minimumForceToBeDestroyed: 5
+  objectMass: 0.2
 --- !u!54 &8651425734784497771
 Rigidbody:
   m_ObjectHideFlags: 0
