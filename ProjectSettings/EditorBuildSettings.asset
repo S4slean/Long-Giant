@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/FloScene.unity
+    guid: 8737cb2957e3b9843b08e6c38285f18d
+  - enabled: 0
     path: Assets/Scenes/TestArm.unity
     guid: a35c727e06beb4f4992cd629c065d08d
   m_configObjects: {}
