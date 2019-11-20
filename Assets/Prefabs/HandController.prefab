@@ -51,6 +51,7 @@ MonoBehaviour:
   cameraArmPlacement: {fileID: 1057710923592022087}
   handRB: {fileID: 1057710924818037348}
   joint: {fileID: 1057710924458710547}
+  placeJoint: 1
 --- !u!114 &1057710923592022087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,7 +421,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: -0.025}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.34379816, z: -0.40154874}
+  m_ConnectedAnchor: {x: 0, y: 0.34379777, z: -0.40154827}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 2
@@ -832,6 +833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3827642955333419186}
+  - component: {fileID: 3330901720895310822}
   m_Layer: 0
   m_Name: HandController
   m_TagString: Untagged
@@ -855,3 +857,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3330901720895310822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690215633153449571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b97e8d67c04b44e8e84efb76b7e234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handPlacer: {fileID: 1057710923592022136}
+  state: 0

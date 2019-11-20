@@ -11,8 +11,12 @@ public class HandPlacerUtility : MonoBehaviour
     public Rigidbody handRB;
     public Joint joint;
 
+    public bool placeJoint = true;
+
     private void Update()
     {
+        if (!placeJoint) return;
+
         joint.transform.position = cam.transform.TransformPoint(cameraArmPlacement.end);
         joint.transform.rotation = cam.transform.rotation;
     }
