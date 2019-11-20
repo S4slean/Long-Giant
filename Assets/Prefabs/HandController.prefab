@@ -420,7 +420,7 @@ ConfigurableJoint:
   m_Anchor: {x: 0, y: 0, z: -0.025}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0.325185, z: -0.37980896}
+  m_ConnectedAnchor: {x: 0, y: 0.34379816, z: -0.40154874}
   serializedVersion: 2
   m_SecondaryAxis: {x: 0, y: 1, z: 0}
   m_XMotion: 2
@@ -610,6 +610,7 @@ GameObject:
   - component: {fileID: 1057710924818037345}
   - component: {fileID: 1057710924818037344}
   - component: {fileID: 1057710924818037348}
+  - component: {fileID: 9062398502895341911}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -710,6 +711,25 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &9062398502895341911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057710924818037359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f05c564f861f5d448966eb44856e468a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectBody: {fileID: 1057710924818037348}
+  physicalObjectInteractionsType: 1
+  minimumForceToBeDestroyed: 0
+  objectDamagingMass: 3
+  objectBodyMass: 3
+  minimumRotationSpeedOnThrow: 180
+  maximumRotationSpeedOnThrow: 270
 --- !u!1 &1057710924878047689
 GameObject:
   m_ObjectHideFlags: 0
