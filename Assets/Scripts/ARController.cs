@@ -21,6 +21,7 @@ public class ARController : MonoBehaviour
 
     private Anchor m_anchorRoot;
     private float m_radius = 0.0f;
+    private bool m_isInitied = false;
 
     public void Awake()
     {
@@ -33,7 +34,7 @@ public class ARController : MonoBehaviour
     private void SetShadowPlanePosition(Vector3 position)
     {
         Debug.Log("Radius is: " + m_radius);
-        //m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
+        m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
         m_shadowPlane.transform.position = position;
         //m_shadowPlane.transform.Find("OcclusionPlane/Plane").transform.localScale = new Vector3(m_radius, 1, m_radius);
         m_shadowPlane.SetActive(true);
@@ -68,8 +69,9 @@ public class ARController : MonoBehaviour
             }
             else
             {
-                if (m_radius != 0.0f) // The two points were set
+                if (m_isInitied) // The two points were set
                 {
+                    Debug.Log("Switch wave activation");
                     // TODO: Temporary:
                     playerCamera.GetComponent<DepthPostprocessing>().waveActive = !playerCamera.GetComponent<DepthPostprocessing>().waveActive;
                     return;
@@ -88,6 +90,7 @@ public class ARController : MonoBehaviour
                 {
                     var tmpPos = new Vector3(hit.Pose.position.x, m_anchorRoot.transform.position.y, hit.Pose.position.z);
                     m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
+                    m_isInitied = true;
                     SetShadowPlanePosition(m_anchorRoot.transform.position);
                 }
             }
