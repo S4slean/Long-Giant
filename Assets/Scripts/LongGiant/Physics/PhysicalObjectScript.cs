@@ -7,7 +7,7 @@ public class PhysicalObjectScript : MonoBehaviour
 {
     bool pendingDestroy;
     [Header("References")]
-    [SerializeField] Rigidbody objectBody = default;
+    [SerializeField] protected Rigidbody objectBody = default;
 
     [Header("Interactions Parameters")]
     [SerializeField] PhysicalObjectInteractionsType physicalObjectInteractionsType = PhysicalObjectInteractionsType.DealAndReceiveDamages;

@@ -22,7 +22,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Important References")]
     [SerializeField] GiantConstructionScript giantConstruction = default;
-    
+    public GiantConstructionScript GetGiantConstruction { get { return giantConstruction; } }
+    [SerializeField] Transform allGameObjectsParent = default;
+    public Transform GetAllGameObjectsParent { get { return allGameObjectsParent; } }
+
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
