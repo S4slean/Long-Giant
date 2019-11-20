@@ -16,8 +16,9 @@ public class PhysicalObjectScript : MonoBehaviour
     public bool CanReceiveDamages { get { return physicalObjectInteractionsType == PhysicalObjectInteractionsType.OnlyReceiveDamages || physicalObjectInteractionsType == PhysicalObjectInteractionsType.DealAndReceiveDamages; } }
 
     [SerializeField] float minimumForceToBeDestroyed = 25;
-    [SerializeField] float objectMass = 1;
-    public float GetObjectMass { get { return objectMass; } }
+    [SerializeField] float objectDamagingMass = 1;
+    [SerializeField] float objectBodyMass= 1;
+    public float GetObjectDamagingMass { get { return objectDamagingMass; } }
 
     [Header("Miscelaneous")]
     [SerializeField] float minimumRotationSpeedOnThrow = 180;
@@ -34,7 +35,7 @@ public class PhysicalObjectScript : MonoBehaviour
         if (objectBody == null)
             objectBody = GetComponent<Rigidbody>();
 
-        objectBody.mass = objectMass;
+        objectBody.mass = objectBodyMass;
     }
 
     private void Start()
@@ -48,7 +49,7 @@ public class PhysicalObjectScript : MonoBehaviour
         if (hitPhysicalObject != null)
             GameManager.gameManager.CollisionsManager.AskForCollisionTreatment(this, hitPhysicalObject, collision.relativeVelocity);
         else
-            CheckForDestroy(collision.relativeVelocity.magnitude * objectMass);
+            CheckForDestroy(collision.relativeVelocity.magnitude * objectDamagingMass);
     }
 
     public virtual bool CheckForDestroy(float speedForce)
@@ -62,6 +63,9 @@ public class PhysicalObjectScript : MonoBehaviour
 
         if (speedForce > minimumForceToBeDestroyed)
             pendingDestroy = true;
+
+        if(pendingDestroy)
+            Debug.Log(name + " destroyed by speed");
 
         return pendingDestroy;
     }
