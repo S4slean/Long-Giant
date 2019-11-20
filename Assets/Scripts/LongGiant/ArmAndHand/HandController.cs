@@ -29,7 +29,7 @@ public class HandController : MonoBehaviour
     {
         Touch touch;
 
-        Debug.Log(Input.touchCount);
+        Debug.Log(Input.touches.Length);
 
         if (Input.touchCount != 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {

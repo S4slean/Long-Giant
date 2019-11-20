@@ -43,7 +43,6 @@ namespace GoogleARCore.Examples.Common
         private Mesh m_Mesh;
 
         private MeshRenderer m_MeshRenderer;
-        private MeshCollider ar_meshCollider;
 
         /// <summary>
         /// The Unity Awake() method.
@@ -52,7 +51,6 @@ namespace GoogleARCore.Examples.Common
         {
             m_Mesh = GetComponent<MeshFilter>().mesh;
             m_MeshRenderer = GetComponent<UnityEngine.MeshRenderer>();
-            ar_meshCollider = GetComponent<MeshCollider>();
         }
 
         /// <summary>
@@ -188,8 +186,6 @@ namespace GoogleARCore.Examples.Common
             m_Mesh.SetVertices(m_MeshVertices);
             m_Mesh.SetTriangles(m_MeshIndices, 0);
             m_Mesh.SetColors(m_MeshColors);
-
-            ar_meshCollider.sharedMesh = m_Mesh;
         }
 
         private bool _AreVerticesListsEqual(List<Vector3> firstList, List<Vector3> secondList)
