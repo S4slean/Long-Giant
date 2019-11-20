@@ -11,6 +11,12 @@ public class PhysicalObjectsCollisionsManager
     {
         bool alreadyTreated = false;
 
+        if(hittingObject == null || hitObject == null)
+        {
+            Debug.LogError("ASKING FOR IMPOSSIBLE COLLISION : No collision treated");
+            return;
+        }
+
         for(int i = 0; i < occuringCollisionsRequests.Count; i++)
         {
             PhysicalObjectsCollisionRequest request = occuringCollisionsRequests[i];
@@ -25,7 +31,9 @@ public class PhysicalObjectsCollisionsManager
         {
             PhysicalObjectsCollisionRequest newRequest = new PhysicalObjectsCollisionRequest();
             newRequest.hittingObject = hittingObject;
+            newRequest.hittingObjectMass = hittingObject.CanDealDamages ? hittingObject.GetObjectMass : 0;
             newRequest.hitObject = hitObject;
+            newRequest.hitObjectMass = hitObject.CanDealDamages ? hitObject.GetObjectMass : 0;
             newRequest.relativeVelocity = relativeVelocity;
             occuringCollisionsRequests.Add(newRequest);
         }
@@ -41,12 +49,14 @@ public class PhysicalObjectsCollisionsManager
 
     public void TreatSingleRequest(PhysicalObjectsCollisionRequest request)
     {
-        DebugTreatment(request);
-        float hittingObjectAppliedForce = request.GetCollisionSpeed * request.hittingObject.GetObjectMass;
-        float hitObjectAppliedForce = request.GetCollisionSpeed * request.hitObject.GetObjectMass;
+        float hittingObjectAppliedForce = request.GetCollisionSpeed * request.hittingObjectMass;
+        float hitObjectAppliedForce = request.GetCollisionSpeed * request.hitObjectMass;
 
-        request.hittingObject.CheckForDestroy(hitObjectAppliedForce);
-        request.hitObject.CheckForDestroy(hittingObjectAppliedForce);
+        if (request.hittingObject != null)
+            request.hittingObject.CheckForDestroy(hitObjectAppliedForce);
+
+        if (request.hitObject != null)
+            request.hitObject.CheckForDestroy(hittingObjectAppliedForce);
     }
 
     public void DebugTreatment(PhysicalObjectsCollisionRequest request)
@@ -58,7 +68,9 @@ public class PhysicalObjectsCollisionsManager
 public struct PhysicalObjectsCollisionRequest
 {
     public PhysicalObjectScript hittingObject;
+    public float hittingObjectMass;
     public PhysicalObjectScript hitObject;
+    public float hitObjectMass;
     public Vector3 relativeVelocity;
     public float GetCollisionSpeed { get { return relativeVelocity.magnitude; } }
 }
