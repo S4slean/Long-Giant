@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 401679223239714762}
   - component: {fileID: 401679223239714763}
   m_Layer: 0
-  m_Name: StoneHouse 1
+  m_Name: WoodStoneHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,8 @@ MonoBehaviour:
   objectBody: {fileID: 401679223239714762}
   physicalObjectInteractionsType: 3
   minimumForceToBeDestroyed: 60
-  objectMass: 2
+  objectDamagingMass: 2
+  objectBodyMass: 2
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   allResourcesSpawnedOnDestroy:
@@ -86,9 +87,9 @@ MonoBehaviour:
     quantity: 2
   - resourceType: 1
     quantity: 3
-  minimumEjectionForce: 3
-  maximumEjectionForce: 5
-  resourcesSpawnDistanceFromObject: 0.5
+  minimumEjectionForce: 0.3
+  maximumEjectionForce: 0.5
+  resourcesSpawnDistanceFromObject: 0.075
 --- !u!1001 &1702380773850545523
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -27,7 +27,8 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            giantConstruction.ReceiveDamages(10);
+            if (giantConstruction != null)
+                giantConstruction.ReceiveDamages(10);
         }
     }
 
