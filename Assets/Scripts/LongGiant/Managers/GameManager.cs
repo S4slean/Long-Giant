@@ -20,6 +20,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] ResourcesManager resourcesManager = default;
     public ResourcesManager ResourcesManager { get { return resourcesManager; } }
 
+    [Header("Important References")]
+    [SerializeField] GiantConstructionScript giantConstruction = default;
+    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            giantConstruction.EjectRandomResource();
+        }
+    }
+
     private void LateUpdate()
     {
         collisionsManager.TreatRequests();
