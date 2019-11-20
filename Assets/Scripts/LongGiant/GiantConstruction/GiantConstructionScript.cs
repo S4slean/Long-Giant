@@ -152,10 +152,12 @@ public class GiantConstructionScript : MonoBehaviour
     #region Damages Management
     public void ReceiveDamages(int damagesAmount)
     {
+        Debug.Log("Receive damages : " + damagesAmount);
         remainingDamagesBeforeNextResourceLoss -= damagesAmount;
 
         while (remainingDamagesBeforeNextResourceLoss <= 0)
         {
+            Debug.Log("Lose Resource");
             remainingDamagesBeforeNextResourceLoss += damagesStepToLoseOneResource;
             EjectRandomResource();
         }
