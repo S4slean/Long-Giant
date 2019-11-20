@@ -33,10 +33,10 @@ public class ARController : MonoBehaviour
     private void SetShadowPlanePosition(Vector3 position)
     {
         Debug.Log("Radius is: " + m_radius);
-        /*m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
+        //m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
         m_shadowPlane.transform.position = position;
         //m_shadowPlane.transform.Find("OcclusionPlane/Plane").transform.localScale = new Vector3(m_radius, 1, m_radius);
-        m_shadowPlane.SetActive(true);*/
+        m_shadowPlane.SetActive(true);
     }
 
     public void Update()
@@ -80,7 +80,7 @@ public class ARController : MonoBehaviour
                     m_anchorRoot = hit.Trackable.CreateAnchor(hit.Pose);
                     m_anchorRoot.gameObject.name = "Root Anchor";
 
-                    GameObject beacon = Instantiate(m_worldOriginPrefab, hit.Pose.position, Quaternion.Euler(90, 0, 0));
+                    GameObject beacon = Instantiate(m_worldOriginPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y + 0.1f, hit.Pose.position.z), Quaternion.Euler(90, 0, 0));
                     beacon.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                     beacon.transform.SetParent(m_anchorRoot.transform);
                 }
