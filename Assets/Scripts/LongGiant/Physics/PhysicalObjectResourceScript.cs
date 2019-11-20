@@ -6,6 +6,31 @@ public class PhysicalObjectResourceScript : PhysicalObjectScript
 {
     [Header("Resource Parameters")]
     [SerializeField] ResourceType resourceType = ResourceType.Wood;
+
+    bool canBePlacedOnGiantConstruction;
+    public void SetCantBePlacedOnGiantConstruction(bool canBePlaced)
+    {
+        canBePlacedOnGiantConstruction = canBePlaced;
+    }
+
+    public override bool CheckForDestroy(float speedForce)
+    {
+        canBePlacedOnGiantConstruction = true;
+        return base.CheckForDestroy(speedForce);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (canBePlacedOnGiantConstruction)
+        {
+            GiantConstructionScript giantConstruction = other.GetComponent<GiantConstructionScript>();
+            if (giantConstruction != null)
+            {
+                giantConstruction.AddResourceToConstruction(resourceType);
+                Destroy(gameObject);
+            }
+        }
+    }
 }
 
 public enum ResourceType
