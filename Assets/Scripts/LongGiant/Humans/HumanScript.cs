@@ -58,6 +58,7 @@ public class HumanScript : PhysicalObjectScript
     [SerializeField] HumanProjectileScript projectilePrefab = default;
     [SerializeField] float rangeAttackDistance = 4;
     [SerializeField] float rangeShootingOffset = 0.1f;
+    [SerializeField] float rangeShootingForce = 200;
     bool isInConstructionZone = false;
 
     FrequenceSystem attackFrequenceSystem;
@@ -76,7 +77,13 @@ public class HumanScript : PhysicalObjectScript
                 break;
 
             case HumanAttackType.Range:
-                //HumanProjectileScript newProjectile = Instantiate(projectilePrefab, transform.position + )
+                Vector3 shootDirection = giantConstruction.transform.position - transform.position;
+                shootDirection.y = 0;
+                shootDirection.Normalize();
+                Vector3 sideVector = new Vector3(-shootDirection.z, 0, shootDirection.x);
+                shootDirection = Quaternion.AngleAxis(45, sideVector) * shootDirection;
+                HumanProjectileScript newProjectile = Instantiate(projectilePrefab, transform.position + shootDirection * rangeShootingOffset, Quaternion.identity);
+                newProjectile.LaunchProjectile(shootDirection * rangeShootingForce, damageAmount);
                 break;
         }
     }
