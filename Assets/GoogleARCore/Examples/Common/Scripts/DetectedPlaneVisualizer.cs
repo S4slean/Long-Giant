@@ -69,8 +69,8 @@ namespace GoogleARCore.Examples.Common
             }
             else if (m_DetectedPlane.TrackingState != TrackingState.Tracking)
             {
-                m_MeshRenderer.enabled = false;
-                return;
+                 m_MeshRenderer.enabled = false;
+                 return;
             }
 
             m_MeshRenderer.enabled = true;
@@ -186,9 +186,6 @@ namespace GoogleARCore.Examples.Common
             m_Mesh.SetVertices(m_MeshVertices);
             m_Mesh.SetTriangles(m_MeshIndices, 0);
             m_Mesh.SetColors(m_MeshColors);
-
-            if (GetComponent<MeshCollider>() != null)
-                GetComponent<MeshCollider>().sharedMesh = m_Mesh;
         }
 
         private bool _AreVerticesListsEqual(List<Vector3> firstList, List<Vector3> secondList)

@@ -16,6 +16,14 @@ public class ARController : MonoBehaviour
 
     private bool m_IsQuitting = false;
 
+    private Anchor m_anchorRoot;
+    private float m_radius = 0.0f;
+
+    public void Start()
+    {
+        //playerCamera.depthTextureMode = playerCamera.depthTextureMode | DepthTextureMode.Depth;
+    }
+
     public void Awake()
     {
         // Enable ARCore to target 60fps camera capture frame rate on supported devices.
@@ -51,14 +59,33 @@ public class ARController : MonoBehaviour
             }
             else
             {
+                if (m_radius != 0.0f) // The two points were set
+                {
+                    return;
+                }
+
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
                 cube.transform.position = hit.Pose.position;
 
-                var anchor = hit.Trackable.CreateAnchor(hit.Pose);
-                gameObject.transform.SetParent(anchor.transform);
+                if (m_anchorRoot == null) // Is first touch
+                {
+                    m_anchorRoot = hit.Trackable.CreateAnchor(hit.Pose);
+                    cube.transform.SetParent(m_anchorRoot.transform);
+                }
+                else // Is second touch
+                {
+                    var pos = new Vector3(hit.Pose.position.x, m_anchorRoot.transform.position.y, hit.Pose.position.z);
+                    m_radius = Vector3.Distance(m_anchorRoot.transform.position, pos);
+                    Debug.Log("Radius is: " + m_radius);
+                }
             }
         }
+    }
+
+    public Anchor getRootAnchor()
+    {
+        return m_anchorRoot;
     }
 
     // Create a post at a position
@@ -107,17 +134,13 @@ public class ARController : MonoBehaviour
     private void _ShowAndroidToastMessage(string message)
     {
         AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject unityActivity =
-            unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaObject unityActivity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
         if (unityActivity != null)
         {
             AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
-            unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
-            {
-                AndroidJavaObject toastObject =
-                    toastClass.CallStatic<AndroidJavaObject>(
-                        "makeText", unityActivity, message, 0);
+            unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() => {
+                AndroidJavaObject toastObject = toastClass.CallStatic<AndroidJavaObject>("makeText", unityActivity, message, 0);
                 toastObject.Call("show");
             }));
         }
