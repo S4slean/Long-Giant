@@ -77,6 +77,8 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
             newHuman.SetUp();
 
             newHuman.Throw(randomThrowVelocity * Random.Range(minimumEjectionForce, maximumEjectionForce));
+
+            spawningManager.IncreamentNumberOfHumans();//
         }
 
         spawningManager.IncreamentNumberOfDestroyedConstructions();

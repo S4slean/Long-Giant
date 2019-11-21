@@ -6,11 +6,19 @@ public class HumanScript : PhysicalObjectScript
     {
         base.SetUp();
         giantConstruction = GameManager.gameManager.GetGiantConstruction;
+        spawningManager = GameManager.gameManager.GetHumanSpawningManager;
         attackFrequenceSystem = new FrequenceSystem(1 / timeBetweenTwoAttack);
         attackFrequenceSystem.SetUp(StartAttack);
     }
 
+    public override void DestroyPhysicalObject()
+    {
+        spawningManager.DecreamentNumberOfHumans();
+        base.DestroyPhysicalObject();
+    }
+
     GiantConstructionScript giantConstruction;
+    HumanSpawningManager spawningManager;
     public float GetDistanceWithGiant 
     { 
         get 
@@ -116,6 +124,10 @@ public class HumanScript : PhysicalObjectScript
 
     public void Update()
     {
+        // WARNING : To reapply when pendingDestroy on protected (override Update would be better)
+        /*if (pendingDestroy)
+            DestroyPhysicalObject();*/
+
         if (!canAct)
             return;
 

@@ -16,10 +16,13 @@ public class ARController : MonoBehaviour
 
     private bool m_IsQuitting = false;
 
+    public GameObject m_arCoreDevice;
     public GameObject m_worldOriginPrefab;
     public GameObject m_shadowPlane;
+    public GameObject m_terrainPlane;
 
     private Anchor m_anchorRoot;
+    private GameObject m_worldRootBeacon;
     private float m_radius = 0.0f;
     private bool m_isInitied = false;
 
@@ -36,7 +39,7 @@ public class ARController : MonoBehaviour
         Debug.Log("Radius is: " + m_radius);
         m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
         m_shadowPlane.transform.position = position;
-        //m_shadowPlane.transform.Find("OcclusionPlane/Plane").transform.localScale = new Vector3(m_radius, 1, m_radius);
+        m_terrainPlane.transform.localScale = new Vector3(m_radius * 1.1f * 2.0f, 0.04f, m_radius * 1.1f * 2.0f);
         m_shadowPlane.SetActive(true);
     }
 
@@ -56,45 +59,62 @@ public class ARController : MonoBehaviour
             return;
         }
 
-        TrackableHit hit;
-        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+        RaycastHit hit;
+        Ray ray = playerCamera.ScreenPointToRay(touch.position);
 
-        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
+        if (Physics.Raycast(ray, out hit))
         {
-            if ((hit.Trackable is DetectedPlane) &&
-                    Vector3.Dot(playerCamera.transform.position - hit.Pose.position,
-                        hit.Pose.rotation * Vector3.up) < 0)
+            if (m_isInitied) // The two points were set
             {
-                Debug.Log("Hit at back of the current DetectedPlane");
+                return;
             }
-            else
+
+            Pose pose = new Pose(hit.point, Quaternion.LookRotation(hit.normal));
+
+            if (m_anchorRoot == null) // Is first touch
             {
-                if (m_isInitied) // The two points were set
-                {
-                    Debug.Log("Switch wave activation");
-                    // TODO: Temporary:
-                    playerCamera.GetComponent<DepthPostprocessing>().waveActive = !playerCamera.GetComponent<DepthPostprocessing>().waveActive;
-                    return;
-                }
+                m_anchorRoot = Session.CreateAnchor(pose);
+                m_anchorRoot.gameObject.name = "Root Anchor";
+                m_anchorRoot.transform.SetParent(m_arCoreDevice.transform);
 
-                if (m_anchorRoot == null) // Is first touch
-                {
-                    m_anchorRoot = hit.Trackable.CreateAnchor(hit.Pose);
-                    m_anchorRoot.gameObject.name = "Root Anchor";
+                m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90.0f, 0, 0));
+                m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);
+                m_worldRootBeacon.transform.SetParent(m_anchorRoot.transform);
+            }
+            else // Is second touch
+            {
+                var tmpPos = new Vector3(pose.position.x, m_anchorRoot.transform.position.y, pose.position.z);
+                m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
+                m_isInitied = true;
+                SetShadowPlanePosition(m_anchorRoot.transform.position);
 
-                    GameObject beacon = Instantiate(m_worldOriginPrefab, new Vector3(hit.Pose.position.x, hit.Pose.position.y + 0.1f, hit.Pose.position.z), Quaternion.Euler(90, 0, 0));
-                    beacon.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-                    beacon.transform.SetParent(m_anchorRoot.transform);
-                }
-                else // Is second touch
-                {
-                    var tmpPos = new Vector3(hit.Pose.position.x, m_anchorRoot.transform.position.y, hit.Pose.position.z);
-                    m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
-                    m_isInitied = true;
-                    SetShadowPlanePosition(m_anchorRoot.transform.position);
-                }
+                StartCoroutine(RemoveWorldRootBeacon());
+                StartCoroutine(SonarRings());
             }
         }
+    }
+
+    IEnumerator SonarRings()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            foreach (var item in Object.FindObjectsOfType<SimpleSonarShader_Object>())
+            {
+                yield return new WaitForSeconds(0.1f);
+                item.StartSonarRing(m_anchorRoot.transform.position, 4.0f);
+            }
+            yield return new WaitForSeconds(i * 0.3f);
+        }
+    }
+
+    IEnumerator RemoveWorldRootBeacon()
+    {
+        while (m_worldRootBeacon.transform.localScale.magnitude > 0.1f)
+        {
+            m_worldRootBeacon.transform.localScale *= 0.85f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        Destroy(m_worldRootBeacon);
     }
 
     public Anchor getRootAnchor()

@@ -7,6 +7,8 @@ public class HumanSpawningManager
 {
     [Header("Humans Prefabs")]
     [SerializeField] List<HumanPrefabWithProbability> allHumanPrefabsWithSpawnProbability = new List<HumanPrefabWithProbability>();
+    [SerializeField] int maximumNumberOfHumans = 20;
+    int currentNumberOfHumans = 0;
     public int GetTotalProbability()
     {
         int totalProba = 0;
@@ -60,7 +62,7 @@ public class HumanSpawningManager
 
     public void UpdateSpawningSystem()
     {
-        if (numberOfDestoyedConstructions == 0)
+        if (numberOfDestoyedConstructions == 0 || currentNumberOfHumans >= maximumNumberOfHumans)
             return;
 
         spawningFrequenceSystem.UpdateFrequence();
@@ -84,7 +86,7 @@ public class HumanSpawningManager
 
         float newFrequenceCoeff = spawnRateDependingOnNumberOfDestroyedConstructions.Evaluate((float)numberOfDestoyedConstructions/maxSpawnRateNumberOfDestroyedConstruction);
         spawningFrequenceSystem.ChangeFrequence(Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));
-        Debug.Log("current frequence : " + Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));
+        //Debug.Log("current frequence : " + Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));
     }
 
     public void SpawnHumanOnRandomSpawnerNoReturn()
@@ -120,7 +122,20 @@ public class HumanSpawningManager
         HumanScript newHuman = Object.Instantiate(pickedPrefab, spawnPos, Quaternion.identity);
         newHuman.SetUp();
 
+        IncreamentNumberOfHumans();
+
         return newHuman;
+    }
+
+    public void IncreamentNumberOfHumans()
+    {
+        currentNumberOfHumans++;
+    }
+
+    public void DecreamentNumberOfHumans()
+    {
+        if (currentNumberOfHumans > 0)
+            currentNumberOfHumans--;
     }
 }
 

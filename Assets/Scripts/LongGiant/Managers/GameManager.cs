@@ -26,12 +26,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] ResourcesManager resourcesManager = default;
     public ResourcesManager ResourcesManager { get { return resourcesManager; } }
 
+    [Header("Other Managers")]
+    [SerializeField] HumanSpawningManager humanSpawningManager = default;
+    public HumanSpawningManager GetHumanSpawningManager { get { return humanSpawningManager; } }
+
+    [SerializeField] WorldGenerationManager worldGenerationManager = default;
+    public WorldGenerationManager GetWorldGenerationManager { get { return worldGenerationManager; } }
+
     [Header("Important References")]
     [SerializeField] GiantConstructionScript giantConstruction = default;
     public GiantConstructionScript GetGiantConstruction { get { return giantConstruction; } }
-
-    [SerializeField] HumanSpawningManager humanSpawningManager = default;
-    public HumanSpawningManager GetHumanSpawningManager { get { return humanSpawningManager; } }
 
     [SerializeField] Transform allGameObjectsParent = default;
     public Transform GetAllGameObjectsParent { get { return allGameObjectsParent; } }
