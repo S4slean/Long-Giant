@@ -123,6 +123,7 @@ public class HumanSpawningManager
             return null;
 
         HumanScript newHuman = Object.Instantiate(pickedPrefab, spawnPos, Quaternion.identity);
+        newHuman.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
         newHuman.SetUp();
 
         IncreamentNumberOfHumans();

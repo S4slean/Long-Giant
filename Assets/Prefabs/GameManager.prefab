@@ -62,7 +62,7 @@ MonoBehaviour:
     - humanPrefab: {fileID: 8623977329504294226, guid: 4fa9ccf993dbe7948b87c325d0184fce,
         type: 3}
       probability: 30
-    maximumNumberOfHumans: 20
+    maximumNumberOfHumans: 10
     maxSpawnRateNumberOfDestroyedConstruction: 30
     spawnRateDependingOnNumberOfDestroyedConstructions:
       serializedVersion: 2
@@ -88,8 +88,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    minimumSpawningRate: 0.25
-    maximumSpawningRate: 0.5
+    minimumSpawningRate: 0.1
+    maximumSpawningRate: 0.2
   worldGenerationManager:
     giantConstructionPrefab: {fileID: 611733609121576622, guid: e550095d2faca8f42aab8b52a2d32ac7,
       type: 3}
@@ -107,17 +107,17 @@ MonoBehaviour:
     worldElementsSpacing: 0
     randomPositionAmplitude: 0
     minimumDistanceWithCenter: 5
-    worldFillingAmount: 0.6
-    maximumNumberOfWorldElements: 10
+    worldFillingAmount: 1
+    maximumNumberOfWorldElements: 15
     phPrefab: {fileID: 378345663568739344, guid: bf3c7dc1d2389f24dbfdd3782d2057a4,
       type: 3}
     resourcesWithWeight:
     - resourceType: 0
-      weight: 0.6
+      weight: 0.15
     - resourceType: 1
-      weight: 0.7
+      weight: 0.25
     - resourceType: 2
-      weight: 0.8
+      weight: 0.3
   giantConstruction: {fileID: 0}
   allGameObjectsParent: {fileID: 0}
   resourcesInformationsLibrary: {fileID: 11400000, guid: ae4515cd1637e394b986f91ccb57ba5f,

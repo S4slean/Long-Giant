@@ -145,6 +145,7 @@ public class GiantConstructionScript : MonoBehaviour
         randomThrowVelocity = Vector3.Slerp(randomThrowVelocity, Vector3.up, 0.5f);
 
         PhysicalObjectResourceScript newResourceObject = Instantiate(prefab, ejectionPosition.position + randomThrowVelocity * ejectionDistanceFromCenter, Quaternion.identity);
+        newResourceObject.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
         newResourceObject.SetUp();
 
         newResourceObject.SetCantBePlacedOnGiantConstruction(false);
@@ -168,6 +169,7 @@ public class GiantConstructionScript : MonoBehaviour
             randomThrowVelocity = Vector3.Slerp(randomThrowVelocity, Vector3.up, 0.5f);
 
             PhysicalObjectResourceScript newResourceObject = Instantiate(prefab, ejectionPosition.position + randomThrowVelocity * ejectionDistanceFromCenter, Quaternion.identity);
+            newResourceObject.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
             newResourceObject.SetUp();
 
             newResourceObject.SetCantBePlacedOnGiantConstruction(false);
