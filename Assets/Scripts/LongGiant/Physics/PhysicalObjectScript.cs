@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PhysicalObjectScript : MonoBehaviour
 {
-    bool pendingDestroy;
+    protected bool pendingDestroy;
     [Header("References")]
     [SerializeField] protected Rigidbody objectBody = default;
 
@@ -73,7 +73,7 @@ public class PhysicalObjectScript : MonoBehaviour
         return pendingDestroy;
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (pendingDestroy)
             DestroyPhysicalObject();

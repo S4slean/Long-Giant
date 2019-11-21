@@ -77,18 +77,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 2760016204539950550}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 60
-  objectMass: 2
+  minimumForceToBeDestroyed: 15
+  objectDamagingMass: 1.5
+  objectBodyMass: 1.5
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   allResourcesSpawnedOnDestroy:
   - resourceType: 0
-    quantity: 2
+    quantity: 1
   - resourceType: 1
-    quantity: 3
+    quantity: 2
   minimumEjectionForce: 3
   maximumEjectionForce: 5
   resourcesSpawnDistanceFromObject: 0.5
+  isSpawner: 1
+  spawningOffset: 1
+  numberOfHumanSpawnedOnDestroy: 2
 --- !u!1001 &1673797954585624672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +104,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StoneHouse
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: f240aacd769a06348974194e0c46d495,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: f240aacd769a06348974194e0c46d495,
         type: 3}
@@ -154,6 +163,16 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: f240aacd769a06348974194e0c46d495,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: f240aacd769a06348974194e0c46d495,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: f240aacd769a06348974194e0c46d495,
+        type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

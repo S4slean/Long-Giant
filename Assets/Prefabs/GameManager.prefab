@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8479539716862071929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8479539716862071930}
+  - component: {fileID: 8479539716862071931}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8479539716862071930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479539716862071929}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8479539716862071931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8479539716862071929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c021b64d5e12f46a79114d390e6818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourcesManager:
+    allResourcesPrefabs:
+    - resourceType: 0
+      prefab: {fileID: 649662642157550460, guid: b1885b3db7d568346be0cba5b879e689,
+        type: 3}
+    - resourceType: 1
+      prefab: {fileID: 649662642157550460, guid: 69e3c39d8508f71498b08918f14543fe,
+        type: 3}
+    - resourceType: 2
+      prefab: {fileID: 649662642157550460, guid: 5b70586a8ddc24f49a57e4c26f5576e1,
+        type: 3}
+  humanSpawningManager:
+    allHumanPrefabsWithSpawnProbability:
+    - humanPrefab: {fileID: 8623977329504294226, guid: 498b53395925f9744b00b37f4366a619,
+        type: 3}
+      probability: 70
+    - humanPrefab: {fileID: 8623977329504294226, guid: 4fa9ccf993dbe7948b87c325d0184fce,
+        type: 3}
+      probability: 30
+    maximumNumberOfHumans: 20
+    maxSpawnRateNumberOfDestroyedConstruction: 30
+    spawnRateDependingOnNumberOfDestroyedConstructions:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0.26900002
+        outSlope: 0.26900002
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.15489466
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1.6504023
+        outSlope: 1.6504023
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.60346967
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    minimumSpawningRate: 0.25
+    maximumSpawningRate: 0.5
+  worldGenerationManager:
+    giantConstructionPrefab: {fileID: 611733609121576622, guid: e550095d2faca8f42aab8b52a2d32ac7,
+      type: 3}
+    allPrefabs:
+    - prefab: {fileID: 378345663568739344, guid: 9e1ce0cb5a8ca6b4cb07a3f226594271,
+        type: 3}
+      probability: 35
+    - prefab: {fileID: 378345663568739344, guid: bdd18165c8bd2c940bed7391f102eb07,
+        type: 3}
+      probability: 25
+    - prefab: {fileID: 378345663568739344, guid: bf3c7dc1d2389f24dbfdd3782d2057a4,
+        type: 3}
+      probability: 50
+    worldElementsSize: 4
+    worldElementsSpacing: 0
+    randomPositionAmplitude: 0
+    minimumDistanceWithCenter: 5
+    worldFillingAmount: 0.6
+    maximumNumberOfWorldElements: 10
+    phPrefab: {fileID: 378345663568739344, guid: bf3c7dc1d2389f24dbfdd3782d2057a4,
+      type: 3}
+    resourcesWithWeight:
+    - resourceType: 0
+      weight: 0.6
+    - resourceType: 1
+      weight: 0.7
+    - resourceType: 2
+      weight: 0.8
+  giantConstruction: {fileID: 0}
+  allGameObjectsParent: {fileID: 0}
+  resourcesInformationsLibrary: {fileID: 11400000, guid: ae4515cd1637e394b986f91ccb57ba5f,
+    type: 2}

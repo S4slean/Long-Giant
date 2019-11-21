@@ -125,8 +125,6 @@ public class CirclePositionsGenerator : MonoBehaviour
             circleCounter++;
         }
 
-        Debug.Log(allPossiblePositions.Count);
-
         return allPossiblePositions;
     }
     /*    public static List<Vector3> GetAllPositionsInCircle(float objectsRadius, float objectsSpacing, float zoneRadius, float minimumDistanceWithRadius, int maxCount)

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6541917628068081316}
   m_LocalRotation: {x: -0, y: -0.38258484, z: -0, w: 0.92392045}
   m_LocalPosition: {x: 1.46, y: 0.78, z: -4.29}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_Children:
   - {fileID: 433459838753437817}
   m_Father: {fileID: 0}
@@ -77,18 +77,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 6541917628068081314}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 60
-  objectMass: 2
+  minimumForceToBeDestroyed: 10
+  objectDamagingMass: 1
+  objectBodyMass: 1
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   allResourcesSpawnedOnDestroy:
   - resourceType: 0
     quantity: 2
-  - resourceType: 1
-    quantity: 3
   minimumEjectionForce: 3
   maximumEjectionForce: 5
   resourcesSpawnDistanceFromObject: 0.5
+  isSpawner: 0
+  spawningOffset: 1
+  numberOfHumanSpawnedOnDestroy: 0
 --- !u!1001 &4861989444293645155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +102,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Carette
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2668138237887259321, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
         type: 3}
@@ -154,6 +166,36 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811731784119195924, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6811731784119195924, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722689269440223632, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4722689269440223632, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -458609611623622118, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -458609611623622118, guid: 14d49caf7ec6ee840bcd85eacc39dc53,
+        type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
