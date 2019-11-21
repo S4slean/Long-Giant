@@ -58,6 +58,7 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
                 randomThrowVelocity.y = Mathf.Abs(randomThrowVelocity.y);
 
                 newResource = Instantiate(resourcePrefab, transform.position + randomThrowVelocity * resourcesSpawnDistanceFromObject, Random.rotation);
+                newResource.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
                 newResource.SetUp();
 
                 newResource.Throw(randomThrowVelocity * Random.Range(minimumEjectionForce, maximumEjectionForce));
@@ -69,12 +70,12 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
         for(int i = 0; i < numberOfHumanSpawnedOnDestroy; i++)
         {
             pickedHumanPrefab = spawningManager.GetRandomHumanPrefab();
-            //newHuman = Instantiate(GetRandomSpawnPos);
 
             randomThrowVelocity = Random.onUnitSphere;
             randomThrowVelocity.y = Mathf.Abs(randomThrowVelocity.y);
 
             newHuman = Instantiate(pickedHumanPrefab, transform.position + randomThrowVelocity * resourcesSpawnDistanceFromObject, Random.rotation);
+            newHuman.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
             newHuman.SetUp();
 
             newHuman.Throw(randomThrowVelocity * Random.Range(minimumEjectionForce, maximumEjectionForce));

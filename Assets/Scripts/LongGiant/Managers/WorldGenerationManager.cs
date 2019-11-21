@@ -34,6 +34,7 @@ public class WorldGenerationManager
         allResourcesQuantities = new Dictionary<ResourceType, int>();
 
         GiantConstructionScript giantConstruction = Object.Instantiate(giantConstructionPrefab, centerPosition, Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+        giantConstruction.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
 
         List<Vector3> allPossiblePositions = CirclePositionsGenerator.GetAllPositionsInCircle(worldElementsSize, worldElementsSpacing, radius, minimumDistanceWithCenter, (int)((float)maximumNumberOfWorldElements / worldFillingAmount));
         int numberOfElementsInWorld = Mathf.Clamp(Mathf.RoundToInt(allPossiblePositions.Count * worldFillingAmount), 0, maximumNumberOfWorldElements);
@@ -55,6 +56,7 @@ public class WorldGenerationManager
             pickedRandomInt = Random.Range(0, allPossiblePositions.Count);
 
             newObject = Object.Instantiate(pickedPrefab, centerPosition + allPossiblePositions[pickedRandomInt] + randomOffset * Random.Range(0, randomPositionAmplitude), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+            newObject.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
             newObject.SetUpAllChildrenElements();
             allPossiblePositions.RemoveAt(pickedRandomInt);
 

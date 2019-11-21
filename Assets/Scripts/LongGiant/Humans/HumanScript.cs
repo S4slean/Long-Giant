@@ -104,6 +104,7 @@ public class HumanScript : PhysicalObjectScript
                 Vector3 sideVector = new Vector3(-shootDirection.z, 0, shootDirection.x);
                 shootDirection = Quaternion.AngleAxis(45, sideVector) * shootDirection;
                 HumanProjectileScript newProjectile = Instantiate(projectilePrefab, transform.position + shootDirection * rangeShootingOffset, Quaternion.identity);
+                newProjectile.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
                 newProjectile.LaunchProjectile(shootDirection * rangeShootingForce, damageAmount);
                 break;
         }

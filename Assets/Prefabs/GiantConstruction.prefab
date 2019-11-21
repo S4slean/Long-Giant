@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 445cbbc0964f49746b29331b9fea4436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagesStepToLoseOneResource: 10
+  damagesStepToLoseOneResource: 25
   ejectionPosition: {fileID: 611733609140097273}
   minimumEjectionForce: 4
   maximumEjectionForce: 6
