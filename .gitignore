@@ -437,3 +437,4 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/unity,csharp,windows
 
 Assets/AssetStoreTools*
+Assets/StreamingAssets/build_info

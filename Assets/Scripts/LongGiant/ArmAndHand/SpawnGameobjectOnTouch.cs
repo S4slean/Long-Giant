@@ -25,10 +25,12 @@ public class SpawnGameobjectOnTouch : MonoBehaviour
     {
 
         Touch touch;
-        if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+        if (Input.touchCount < 2 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
             return;
         }
+
+        touch = Input.GetTouch(0);
 
         // Should not handle input if the player is pointing on UI.
         if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
@@ -36,14 +38,25 @@ public class SpawnGameobjectOnTouch : MonoBehaviour
             return;
         }
 
-        TrackableHit hit;
-        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon | TrackableHitFlags.FeaturePointWithSurfaceNormal;
+        RaycastHit hit;
+        Camera cam = Camera.main;
+        Ray ray = cam.ScreenPointToRay(touch.position);
 
-        if (Frame.Raycast(touch.position.x, touch.position.y, raycastFilter, out hit))
+        if (Physics.Raycast(ray, out hit))
         {
             GameObject newGo = Instantiate(go);
-            newGo.transform.position = hit.Pose.position;
-            newGo.transform.localScale *= 0.1f;
+
+            Vector3 position = hit.point;
+
+            newGo.transform.position = position;
         }
+    }
+
+
+    private void LateUpdate()
+    {
+#if UNITY_EDITOR
+        Input.ResetTouches();
+#endif
     }
 }

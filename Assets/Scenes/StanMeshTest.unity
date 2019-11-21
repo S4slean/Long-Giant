@@ -710,6 +710,37 @@ MonoBehaviour:
       prefab: {fileID: 649662642157550460, guid: 5b70586a8ddc24f49a57e4c26f5576e1,
         type: 3}
   giantConstruction: {fileID: 1890262419}
+  humanSpawningManager:
+    allHumanPrefabsWithSpawnProbability: []
+    maxSpawnRateNumberOfDestroyedConstruction: 20
+    spawnRateDependingOnNumberOfDestroyedConstructions:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    minimumSpawningRate: 0.5
+    maximumSpawningRate: 3
+  allGameObjectsParent: {fileID: 0}
+  resourcesInformationsLibrary: {fileID: 0}
 --- !u!1001 &568304646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -905,6 +936,9 @@ MonoBehaviour:
   minimumEjectionForce: 4
   maximumEjectionForce: 6
   resourcesSpawnDistanceFromObject: 0.5
+  isSpawner: 0
+  spawningOffset: 1
+  numberOfHumanSpawnedOnDestroy: 0
 --- !u!54 &917159570
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1269,6 +1303,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8946327292188519861, guid: 5d41ddb84628de34fa1caa5b98ea0fdc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e39486d19f4b054f81764084362e947, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d41ddb84628de34fa1caa5b98ea0fdc, type: 3}
 --- !u!1 &1890262418
@@ -1313,6 +1352,10 @@ MonoBehaviour:
   minimumEjectionForce: 4
   maximumEjectionForce: 6
   ejectionDistanceFromCenter: 1
+  UIParent: {fileID: 0}
+  singleInformationsUIPrefab: {fileID: 0}
+  singleInformationsUIParent: {fileID: 0}
+  spaceBetweenTwoLines: 0.5
 --- !u!4 &1890262420
 Transform:
   m_ObjectHideFlags: 0

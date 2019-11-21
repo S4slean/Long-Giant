@@ -64,6 +64,11 @@ namespace GoogleARCore
             }
         }
 
+        public static void ResetTouches()
+        {
+            s_TouchList.Clear();
+        }
+
         /// <summary>
         /// Gets the number of touches available from Instant preview since the
         /// last update.
