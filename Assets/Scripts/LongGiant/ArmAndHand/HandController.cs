@@ -24,7 +24,7 @@ public class HandController : MonoBehaviour
     private HandCollisionCallback handCallback;
     private HandPlacerUtility handPlacer;
     private PhysicalObjectScript handPhysicalObject;
-    private Rigidbody handBody;
+    public Rigidbody handBody;
     public ConfigurableJoint joint;
 
     private PhysicalObjectScript grabbedObj;
@@ -35,7 +35,6 @@ public class HandController : MonoBehaviour
         handPlacer = GetComponentInChildren<HandPlacerUtility>();
         handCallback = GetComponentInChildren<HandCollisionCallback>();
         handPhysicalObject = GetComponentInChildren<PhysicalObjectScript>();
-        handBody = GetComponentInChildren<Rigidbody>();
 
         handCallback.OnCollision += OnHandCollision;
     }
@@ -85,8 +84,6 @@ public class HandController : MonoBehaviour
             RaycastHit hit;
             Camera cam = Camera.main;
             Ray ray = cam.ScreenPointToRay(touch.position);
-            Debug.DrawRay(ray.origin, ray.direction);
-
 
             if (Physics.Raycast(ray, out hit, layerMask.value))
             {
@@ -109,13 +106,35 @@ public class HandController : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(touch.position);
 
             SetJointActive(false);
+            grabbedObj.GetComponent<Rigidbody>().useGravity = true;
+
+            StartCoroutine(CollisionsCoroutine(grabbedObj.GetComponent<Collider>()));
 
             grabbedObj.Throw(ray.direction, throwForce);
             grabbedObj = null;
 
+            handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
+
             OpenHand(true);
 
+            handBody.AddForce(ray.direction * 500, ForceMode.Impulse);
+
             return;
+        }
+    }
+
+    IEnumerator CollisionsCoroutine(Collider c1)
+    {
+        foreach (var item in handBody.GetComponentsInChildren<Collider>())
+        {
+            Physics.IgnoreCollision(c1, item, true);
+        }
+
+        yield return new WaitForSeconds(2);
+
+        foreach (var item in handBody.GetComponentsInChildren<Collider>())
+        {
+            Physics.IgnoreCollision(c1, item, false);
         }
     }
 
@@ -137,8 +156,11 @@ public class HandController : MonoBehaviour
                 grabbedObj = physObj;
 
                 Rigidbody objRB = physObj.GetComponent<Rigidbody>();
+                objRB.useGravity = false;
 
-                objRB.transform.position = handBody.transform.TransformPoint(objRB.GetComponent<Collider>().bounds.extents);
+                Vector3 extents = objRB.GetComponent<Collider>().bounds.extents;
+
+                joint.anchor = new Vector3(0, -extents.y*3.3f, extents.z *.0f);
 
                 joint.connectedBody = physObj.GetComponent<Rigidbody>();
                 SetJointActive(true);

@@ -52,11 +52,4 @@ public class SpawnGameobjectOnTouch : MonoBehaviour
         }
     }
 
-
-    private void LateUpdate()
-    {
-#if UNITY_EDITOR
-        Input.ResetTouches();
-#endif
-    }
 }

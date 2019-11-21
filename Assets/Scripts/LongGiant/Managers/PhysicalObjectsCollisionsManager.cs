@@ -49,7 +49,7 @@ public class PhysicalObjectsCollisionsManager
 
     public void TreatSingleRequest(PhysicalObjectsCollisionRequest request)
     {
-        DebugTreatment(request);
+        //DebugTreatment(request);
 
         float hittingObjectAppliedForce = request.GetCollisionSpeed * request.hittingObjectMass;
         float hitObjectAppliedForce = request.GetCollisionSpeed * request.hitObjectMass;

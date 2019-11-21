@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6421857289515326494}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OpenHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4822660494252822295}
   - component: {fileID: 3873066341190454628}
   - component: {fileID: 914149201348559919}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 8979730893981596436}
   - component: {fileID: 5309841784418735896}
   - component: {fileID: 5950097590506387558}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 1057710924117106280}
   - component: {fileID: 1057710924117106295}
   - component: {fileID: 1057710924117106294}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 1057710924317191094}
   - component: {fileID: 1057710924317191093}
   - component: {fileID: 1057710924317191092}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -684,17 +684,17 @@ ConfigurableJoint:
   m_XDrive:
     serializedVersion: 3
     positionSpring: 769.5
-    positionDamper: 30
+    positionDamper: 50
     maximumForce: 3.4028233e+38
   m_YDrive:
     serializedVersion: 3
     positionSpring: 676.2
-    positionDamper: 30
+    positionDamper: 50
     maximumForce: 3.4028233e+38
   m_ZDrive:
     serializedVersion: 3
     positionSpring: 405.1
-    positionDamper: 30
+    positionDamper: 50
     maximumForce: 3.4028233e+38
   m_TargetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_TargetAngularVelocity: {x: 0, y: 0, z: 0}
@@ -737,7 +737,7 @@ GameObject:
   - component: {fileID: 1057710924564454642}
   - component: {fileID: 1057710924564454641}
   - component: {fileID: 1057710924564454640}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -834,7 +834,7 @@ GameObject:
   - component: {fileID: 1057710924818037348}
   - component: {fileID: 9062398502895341911}
   - component: {fileID: 8814743270577061722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,7 +865,7 @@ ConfigurableJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057710924818037359}
   m_ConnectedBody: {fileID: 0}
-  m_Anchor: {x: 0, y: -1.02, z: 0}
+  m_Anchor: {x: 0.2, y: -1.7, z: 0.2}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 0
   m_ConnectedAnchor: {x: 0, y: 0, z: 0}
@@ -1070,7 +1070,7 @@ GameObject:
   - component: {fileID: 1057710924878047693}
   - component: {fileID: 1057710924878047692}
   - component: {fileID: 1057710924878047691}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1203,6 +1203,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   state: 0
+  handBody: {fileID: 1057710924818037348}
   joint: {fileID: 6589457042322445306}
 --- !u!1 &3781597378828737992
 GameObject:
@@ -1216,7 +1217,7 @@ GameObject:
   - component: {fileID: 6635922644402115307}
   - component: {fileID: 1530305349051301883}
   - component: {fileID: 621794636641946968}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1309,7 +1310,7 @@ GameObject:
   - component: {fileID: 3488836433231586266}
   - component: {fileID: 4807919082325670365}
   - component: {fileID: 8388487642193699637}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1399,7 +1400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1959172516161178318}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ClosedHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
