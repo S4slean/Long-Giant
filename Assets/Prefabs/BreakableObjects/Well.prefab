@@ -77,16 +77,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 9003407200854433186}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 60
-  objectDamagingMass: 1
-  objectBodyMass: 1
+  minimumForceToBeDestroyed: 15
+  objectDamagingMass: 1.5
+  objectBodyMass: 1.5
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   allResourcesSpawnedOnDestroy:
   - resourceType: 0
-    quantity: 2
+    quantity: 1
   - resourceType: 1
-    quantity: 3
+    quantity: 1
   minimumEjectionForce: 3
   maximumEjectionForce: 5
   resourcesSpawnDistanceFromObject: 0.5
@@ -104,6 +104,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Well
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: d46b9dd9bed2a86489d1f96b94a34fb6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: d46b9dd9bed2a86489d1f96b94a34fb6,
         type: 3}
@@ -158,6 +163,16 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: d46b9dd9bed2a86489d1f96b94a34fb6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -781095225263795234, guid: d46b9dd9bed2a86489d1f96b94a34fb6,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -781095225263795234, guid: d46b9dd9bed2a86489d1f96b94a34fb6,
+        type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
