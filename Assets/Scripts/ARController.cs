@@ -100,6 +100,7 @@ public class ARController : MonoBehaviour
 
     private void OnTrackingRecovered()
     {
+        Debug.Log("OnTrackingRecovered() Desactivate planes");
         m_planeDiscovery.SetActive(false);
         m_planeGenerator.SetActive(false);
         m_pointCloud.SetActive(false);
@@ -107,6 +108,7 @@ public class ARController : MonoBehaviour
 
     private void OnTrackingLost()
     {
+        Debug.Log("OnTrackingLost() Activate planes");
         m_planeDiscovery.SetActive(true);
         m_planeGenerator.SetActive(true);
         m_pointCloud.SetActive(true);
@@ -215,12 +217,18 @@ public class ARController : MonoBehaviour
     {
         if (Session.Status != SessionStatus.Tracking)
         {
-            OnTrackingLost();
+            if (m_isInitied)
+            {
+                OnTrackingLost();
+            }
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
         }
         else
         {
-            OnTrackingRecovered();
+            if (m_isInitied)
+            {
+                OnTrackingRecovered();
+            }
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
