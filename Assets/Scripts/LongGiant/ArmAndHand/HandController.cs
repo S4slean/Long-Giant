@@ -12,19 +12,30 @@ using Input = GoogleARCore.InstantPreviewInput;
 
 public class HandController : MonoBehaviour
 {
-    public HandPlacerUtility handPlacer;
-
+    public float throwForce;
+    public GameObject openHand;
+    public GameObject closedhand;
+    public LayerMask layerMask;
 
     public State state;
 
     private Vector3 endPosCache;
 
     private HandCollisionCallback handCallback;
+    private HandPlacerUtility handPlacer;
+    private PhysicalObjectScript handPhysicalObject;
+    private Rigidbody handBody;
+    public ConfigurableJoint joint;
+
+    private PhysicalObjectScript grabbedObj;
 
     // Start is called before the first frame update
     void Start()
     {
+        handPlacer = GetComponentInChildren<HandPlacerUtility>();
         handCallback = GetComponentInChildren<HandCollisionCallback>();
+        handPhysicalObject = GetComponentInChildren<PhysicalObjectScript>();
+        handBody = GetComponentInChildren<Rigidbody>();
 
         handCallback.OnCollision += OnHandCollision;
     }
@@ -37,9 +48,18 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Touch touch;
+        if (state == State.Grabbing)
+        {
+            // Grabbed object has been destroyed
+            if (grabbedObj == null)
+            {
+                state = State.Smash;
+                SetJointActive(false);
+                OpenHand(true);
+            }
+        }
 
-        Debug.Log(Input.touches.Length);
+        Touch touch;
 
         if (Input.touchCount != 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
@@ -52,19 +72,50 @@ public class HandController : MonoBehaviour
             return;
         }
 
-        RaycastHit hit;
-        Camera cam = Camera.main;
-        Ray ray = cam.ScreenPointToRay(touch.position);
-        Debug.DrawRay(ray.origin, ray.direction);
-
-
-        if (Physics.Raycast(ray, out hit))
+        if (state == State.Reaching)
         {
-            Vector3 position = hit.point;
+            state = State.Smash;
+            handPlacer.placeJoint = true;
 
-            handPlacer.joint.transform.position = position;
+            return;
+        }
 
-            handPlacer.placeJoint = false;
+        if (state == State.Smash)
+        {
+            RaycastHit hit;
+            Camera cam = Camera.main;
+            Ray ray = cam.ScreenPointToRay(touch.position);
+            Debug.DrawRay(ray.origin, ray.direction);
+
+
+            if (Physics.Raycast(ray, out hit, layerMask.value))
+            {
+                Vector3 position = hit.point;
+
+                handPlacer.joint.transform.position = position;
+                handPlacer.placeJoint = false;
+
+                handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.None;
+
+                state = State.Reaching;
+            }
+
+            return;
+        }
+
+        if (state == State.Grabbing)
+        {
+            Camera cam = Camera.main;
+            Ray ray = cam.ScreenPointToRay(touch.position);
+
+            SetJointActive(false);
+
+            grabbedObj.Throw(ray.direction, throwForce);
+            grabbedObj = null;
+
+            OpenHand(true);
+
+            return;
         }
     }
 
@@ -77,7 +128,70 @@ public class HandController : MonoBehaviour
 
     public void OnHandCollision(Collision col)
     {
-        print("touched " + col.collider.name);
+        if (state == State.Reaching)
+        {
+            PhysicalObjectScript physObj = col.collider.GetComponent<PhysicalObjectScript>();
+
+            if (physObj != null)
+            {
+                grabbedObj = physObj;
+
+                Rigidbody objRB = physObj.GetComponent<Rigidbody>();
+
+                objRB.transform.position = handBody.transform.TransformPoint(objRB.GetComponent<Collider>().bounds.extents);
+
+                joint.connectedBody = physObj.GetComponent<Rigidbody>();
+                SetJointActive(true);
+
+                state = State.Grabbing;
+
+                OpenHand(false);
+            }
+            else
+            {
+                state = State.Smash;
+            }
+
+            handPlacer.placeJoint = true;
+        }
+
+    }
+
+    public void SetJointActive(bool _bool)
+    {
+        if (_bool)
+        {
+            joint.xMotion = ConfigurableJointMotion.Locked;
+            joint.yMotion = ConfigurableJointMotion.Locked;
+            joint.zMotion = ConfigurableJointMotion.Locked;
+            joint.angularXMotion = ConfigurableJointMotion.Locked;
+            joint.angularYMotion = ConfigurableJointMotion.Locked;
+            joint.angularZMotion = ConfigurableJointMotion.Locked;
+        }
+        else
+        {
+            joint.connectedBody = null;
+            joint.xMotion = ConfigurableJointMotion.Free;
+            joint.yMotion = ConfigurableJointMotion.Free;
+            joint.zMotion = ConfigurableJointMotion.Free;
+            joint.angularXMotion = ConfigurableJointMotion.Free;
+            joint.angularYMotion = ConfigurableJointMotion.Free;
+            joint.angularZMotion = ConfigurableJointMotion.Free;
+        }
+    }
+
+    public void OpenHand(bool _bool)
+    {
+        if (_bool)
+        {
+            openHand.SetActive(true);
+            closedhand.SetActive(false);
+        }
+        else
+        {
+            openHand.SetActive(false);
+            closedhand.SetActive(true);
+        }
     }
 
     public enum State

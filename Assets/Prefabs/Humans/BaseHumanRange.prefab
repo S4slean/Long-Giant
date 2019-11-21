@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 8623977329504294227}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 25
+  minimumForceToBeDestroyed: 1
   objectDamagingMass: 0.1
   objectBodyMass: 0.1
   minimumRotationSpeedOnThrow: 180
