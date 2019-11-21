@@ -10,7 +10,7 @@ public class PhysicalObjectScript : MonoBehaviour
     [SerializeField] protected Rigidbody objectBody = default;
 
     [Header("Interactions Parameters")]
-    [SerializeField] PhysicalObjectInteractionsType physicalObjectInteractionsType = PhysicalObjectInteractionsType.DealAndReceiveDamages;
+    [SerializeField] public PhysicalObjectInteractionsType physicalObjectInteractionsType = PhysicalObjectInteractionsType.DealAndReceiveDamages;
 
     public bool CanDealDamages { get { return physicalObjectInteractionsType == PhysicalObjectInteractionsType.OnlyDealDamages || physicalObjectInteractionsType == PhysicalObjectInteractionsType.DealAndReceiveDamages; } }
     public bool CanReceiveDamages { get { return physicalObjectInteractionsType == PhysicalObjectInteractionsType.OnlyReceiveDamages || physicalObjectInteractionsType == PhysicalObjectInteractionsType.DealAndReceiveDamages; } }
@@ -45,7 +45,10 @@ public class PhysicalObjectScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        PhysicalObjectScript hitPhysicalObject = collision.collider.GetComponent<PhysicalObjectScript>();
+        /*PhysicalObjectScript hitPhysicalObject = collision.collider.GetComponent<PhysicalObjectScript>();
+        if (hitPhysicalObject == null)*/
+            PhysicalObjectScript hitPhysicalObject = collision.collider.GetComponentInParent<PhysicalObjectScript>();
+
         if (hitPhysicalObject != null)
             GameManager.gameManager.CollisionsManager.AskForCollisionTreatment(this, hitPhysicalObject, collision.relativeVelocity);
         else

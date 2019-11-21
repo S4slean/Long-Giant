@@ -19,7 +19,7 @@ public class SimpleLine : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         lineRenderer.SetPosition(0, Camera.main.transform.TransformPoint(handPlacer.cameraArmPlacement.start));
         lineRenderer.SetPosition(1, handPlacer.handRB.position);

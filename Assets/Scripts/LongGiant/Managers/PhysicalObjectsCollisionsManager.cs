@@ -49,6 +49,8 @@ public class PhysicalObjectsCollisionsManager
 
     public void TreatSingleRequest(PhysicalObjectsCollisionRequest request)
     {
+        DebugTreatment(request);
+
         float hittingObjectAppliedForce = request.GetCollisionSpeed * request.hittingObjectMass;
         float hitObjectAppliedForce = request.GetCollisionSpeed * request.hitObjectMass;
 
@@ -61,7 +63,7 @@ public class PhysicalObjectsCollisionsManager
 
     public void DebugTreatment(PhysicalObjectsCollisionRequest request)
     {
-        Debug.Log("Treating " + request.hittingObject.name + " hitting " + request.hitObject.name + " at speed " + request.GetCollisionSpeed);
+        Debug.Log("Treating " + request.hittingObject.name + " (mass : " + request.hittingObjectMass + ") hitting " + request.hitObject.name + " (mass : " + request.hitObjectMass + ") at speed " + request.GetCollisionSpeed);
     }
 }
 
