@@ -148,6 +148,7 @@ public class ARController : MonoBehaviour
                 m_anchorRoot = Session.CreateAnchor(pose);
                 m_anchorRoot.gameObject.name = "Root Anchor";
                 m_anchorRoot.transform.SetParent(m_arCoreDevice.transform);
+                GameManager.gameManager.SetAllGameObjectsParent(m_anchorRoot.transform);
 
                 m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90.0f, 0, 0));
                 m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);

@@ -33,6 +33,10 @@ public class HumanScript : PhysicalObjectScript
     [SerializeField] float moveSpeed = 10;
     bool canAct = true;
     bool isWalking = false;
+    public void StopAct()
+    {
+        canAct = false;
+    }
     public void UpdateMove()
     {
         Vector3 moveDirection = giantConstruction.transform.position - transform.position;

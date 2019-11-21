@@ -171,6 +171,9 @@ public class HandController : MonoBehaviour
                 state = State.Grabbing;
 
                 OpenHand(false);
+
+                if (physObj is HumanScript)
+                    (physObj as HumanScript).StopAct();
             }
             else
             {
