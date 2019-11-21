@@ -132,6 +132,8 @@ public class HandController : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
+        if (c1 == null) yield break;
+
         foreach (var item in handBody.GetComponentsInChildren<Collider>())
         {
             Physics.IgnoreCollision(c1, item, false);
