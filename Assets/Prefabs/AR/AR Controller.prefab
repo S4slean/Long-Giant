@@ -49,7 +49,8 @@ MonoBehaviour:
   m_worldOriginPrefab: {fileID: 8383504133980986452, guid: a46c1e918e78cd349a817c4d84e8f928,
     type: 3}
   m_shadowPlane: {fileID: 0}
-  m_worldGroundPrefab: {fileID: 0}
+  m_worldGroundPrefab: {fileID: 1819584307475102888, guid: a984f06a2ee136949b2f6537bbfd2880,
+    type: 3}
   m_worldBoundPrefab: {fileID: 1947169003860518019, guid: 54a9589fbb662ed4fb6095818058616f,
     type: 3}
 --- !u!1 &6793199819496248869

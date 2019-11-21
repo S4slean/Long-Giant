@@ -52,9 +52,9 @@ public class ARController : MonoBehaviour
         }
 
         float worldSize = m_radius * 1.1f * 2.0f;
-        GameObject terrainPlane = Instantiate(m_worldGroundPrefab, position, Quaternion.identity, m_anchorRoot.transform);
+        /*GameObject terrainPlane = Instantiate(m_worldGroundPrefab, position, Quaternion.identity, m_anchorRoot.transform);
         terrainPlane.transform.localScale = new Vector3(worldSize, 0.04f, worldSize);
-        terrainPlane.name = "WorldGround";
+        terrainPlane.name = "WorldGround";*/
 
         GameObject go;
         Vector3 size = new Vector3(worldSize * 2.0f, 10.0f, worldSize * 2.0f);
@@ -132,21 +132,22 @@ public class ARController : MonoBehaviour
             {
                 var tmpPos = new Vector3(pose.position.x, m_anchorRoot.transform.position.y, pose.position.z);
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
-                /*if (m_radius < 1f)
+                if (m_radius < 10f)
                 {
-                    _ShowAndroidToastMessage("Playground radius should be > 1= meter ; currently " + m_radius + " meters");
+                    _ShowAndroidToastMessage("Playground radius should be > 1= meter ; currently " + m_radius/10f + " meters");
                     return;
-                }*/
+                }
                 m_isInitied = true;
                 SetShadowPlanePosition(m_anchorRoot.transform.position);
 
-                SonarRings();
+                //SonarRings();
                 StartCoroutine(RemoveWorldRootBeacon());
 
-                if (OnPlaygroundCreated != null)
+                GameManager.gameManager.GetWorldGenerationManager.GenerateWorld(m_anchorRoot.transform.position, m_radius);
+                /*if (OnPlaygroundCreated != null)
                 {
                     OnPlaygroundCreated(m_anchorRoot.transform.position, m_radius);
-                }
+                }*/
             }
         }
     }
