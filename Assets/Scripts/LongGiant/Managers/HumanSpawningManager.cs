@@ -73,14 +73,14 @@ public class HumanSpawningManager
         if (newSpawner != null)
             inGameSpanwers.Add(newSpawner);
 
-        Debug.Log("Number of spawners : " + inGameSpanwers.Count);
+        //Debug.Log("Number of spawners : " + inGameSpanwers.Count);
     }
 
     public void RemoveSpawner(PhysicalObjectConstructionScript spawnerToRemove)
     {
         if (inGameSpanwers.Contains(spawnerToRemove))
             inGameSpanwers.Remove(spawnerToRemove);
-        Debug.Log("Number of spawners : " + inGameSpanwers.Count);
+        //Debug.Log("Number of spawners : " + inGameSpanwers.Count);
     }
 
     public void IncreamentNumberOfDestroyedConstructions()

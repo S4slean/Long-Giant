@@ -39,7 +39,7 @@ public class WorldGenerationManager
         List<Vector3> allPossiblePositions = CirclePositionsGenerator.GetAllPositionsInCircle(worldElementsSize, worldElementsSpacing, radius, minimumDistanceWithCenter, (int)((float)maximumNumberOfWorldElements / worldFillingAmount));
         int numberOfElementsInWorld = Mathf.Clamp(Mathf.RoundToInt(allPossiblePositions.Count * worldFillingAmount), 0, maximumNumberOfWorldElements);
 
-        Debug.Log("Total Number of Elements : " + numberOfElementsInWorld);
+        //Debug.Log("Total Number of Elements : " + numberOfElementsInWorld);
 
         WorldElementPrefab pickedPrefab = null;
         WorldElementPrefab newObject = null;
@@ -67,7 +67,7 @@ public class WorldGenerationManager
         giantConstruction.GenerateNeededResourcesDictionary(GenerateObjective());
 
         GameManager.gameManager.SetGiantConstruction(giantConstruction);
-        DebugAllResourcesQuantities();
+        //DebugAllResourcesQuantities();
     }
 
     public void AddResourcesToTotal(PhysicalObjectConstructionScript construction)

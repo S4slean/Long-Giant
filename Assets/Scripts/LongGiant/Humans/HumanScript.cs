@@ -53,7 +53,8 @@ public class HumanScript : PhysicalObjectScript
             switch (attackType)
             {
                 case HumanAttackType.Melee:
-                    return !isInConstructionZone;
+                    return GetDistanceWithGiant > meleeAttackDistance;
+                //return !isInConstructionZone;
                 case HumanAttackType.Range:
                     return GetDistanceWithGiant > rangeAttackDistance;
                 default:
@@ -66,11 +67,12 @@ public class HumanScript : PhysicalObjectScript
     [SerializeField] HumanAttackType attackType = HumanAttackType.Melee;
     [SerializeField] float timeBetweenTwoAttack = 1;
     [SerializeField] int damageAmount = 5;
+    [SerializeField] float meleeAttackDistance = 2.75f;
     [SerializeField] HumanProjectileScript projectilePrefab = default;
     [SerializeField] float rangeAttackDistance = 4;
     [SerializeField] float rangeShootingOffset = 0.1f;
     [SerializeField] float rangeShootingForce = 5;
-    bool isInConstructionZone = false;
+    //bool isInConstructionZone = false;
 
     FrequenceSystem attackFrequenceSystem;
 
@@ -163,12 +165,12 @@ public class HumanScript : PhysicalObjectScript
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         GiantConstructionScript giantConstruction = other.GetComponent<GiantConstructionScript>();
         if (giantConstruction != null)
             isInConstructionZone = true;
-    }
+    }*/
 }
 
 public enum HumanAttackType

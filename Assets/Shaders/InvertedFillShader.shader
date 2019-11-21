@@ -1,4 +1,4 @@
-﻿Shader "Unlit/FillShader"
+﻿Shader "Unlit/InvertedFillShader"
 {
     Properties
     {
@@ -9,9 +9,12 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+		Tags {"Queue" = "Transparent" "RenderType" = "Transparent" }
         LOD 100
+		ZWrite Off
 		Cull Off
+		Blend SrcAlpha 
+		OneMinusSrcAlpha
         Pass
         {
             CGPROGRAM
@@ -59,7 +62,7 @@
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
 
-				clip((-i.localPos.z - (_Scale + 0.001f)) + _Fill * (_Scale * _Height));
+				clip(-((-i.localPos.z - (_Scale + 0.001f)) + _Fill * (_Scale * /*2*/_Height)));
 
                 return col;
             }

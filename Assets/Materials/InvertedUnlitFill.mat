@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UnlitFill
-  m_Shader: {fileID: 4800000, guid: 8af2bf1abd9121c44b59a416198a1271, type: 3}
+  m_Name: InvertedUnlitFill
+  m_Shader: {fileID: 4800000, guid: 2e67b5cdc03a9e646a3de62052c96ded, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 35145152280e6f543b9ba7c6d63b45d5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 60fafe4c5665cb648b408081665f1a35, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
