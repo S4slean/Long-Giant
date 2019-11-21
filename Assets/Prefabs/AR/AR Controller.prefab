@@ -53,6 +53,10 @@ MonoBehaviour:
     type: 3}
   m_worldBoundPrefab: {fileID: 1947169003860518019, guid: 54a9589fbb662ed4fb6095818058616f,
     type: 3}
+  m_minPlaygroundRadius: 7.5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!1 &6793199819496248869
 GameObject:
   m_ObjectHideFlags: 0

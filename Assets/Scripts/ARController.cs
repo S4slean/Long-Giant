@@ -133,7 +133,7 @@ public class ARController : MonoBehaviour
         RaycastHit hit;
         Ray ray = playerCamera.ScreenPointToRay(touch.position);
 
-        if (Physics.Raycast(ray, out hit, layerMask.value))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
         {
             if (m_isInitied) // The two points were set
             {
