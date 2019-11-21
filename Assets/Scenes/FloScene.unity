@@ -556,6 +556,8 @@ MonoBehaviour:
     type: 3}
   m_shadowPlane: {fileID: 1518001735}
   m_terrainPlane: {fileID: 1436112666}
+  m_worldBoundPrefab: {fileID: 1947169003860518019, guid: 54a9589fbb662ed4fb6095818058616f,
+    type: 3}
 --- !u!1 &1436112666 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1819584307475102888, guid: a984f06a2ee136949b2f6537bbfd2880,
