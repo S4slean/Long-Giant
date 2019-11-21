@@ -17,23 +17,23 @@ public class ARController : MonoBehaviour
 
     public Camera playerCamera;
 
-    private bool m_IsQuitting = false;
-
     public GameObject m_arCoreDevice;
     public GameObject m_worldOriginPrefab;
     public GameObject m_shadowPlane;
     public GameObject m_worldGroundPrefab;
     public GameObject m_worldBoundPrefab;
     public float m_minPlaygroundRadius = 7.5f;
-
-    private GameObject m_planeDiscovery;
-    private GameObject m_planeGenerator;
-    private GameObject m_pointCloud;
+    public LayerMask layerMask;
 
     private Anchor m_anchorRoot;
     private GameObject m_worldRootBeacon;
     private float m_radius = 0.0f;
     private bool m_isInitied = false;
+    private bool m_IsQuitting = false;
+
+    private GameObject m_planeDiscovery;
+    private GameObject m_planeGenerator;
+    private GameObject m_pointCloud;
 
     public void Awake()
     {
@@ -133,7 +133,7 @@ public class ARController : MonoBehaviour
         RaycastHit hit;
         Ray ray = playerCamera.ScreenPointToRay(touch.position);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, layerMask.value))
         {
             if (m_isInitied) // The two points were set
             {
