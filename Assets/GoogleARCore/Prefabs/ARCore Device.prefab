@@ -312,7 +312,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772147192650458}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
@@ -407,11 +407,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114747870037459092, guid: 26558ae1d2e7243728486d789f984c53,
-        type: 3}
-      propertyPath: EnablePopAnimation
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26558ae1d2e7243728486d789f984c53, type: 3}
 --- !u!4 &4205355472365909 stripped
@@ -487,12 +482,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1057710923592022136, guid: eb9a4e40f1d98f846a053cc82864ed32,
+    - target: {fileID: 1057710923592022087, guid: eb9a4e40f1d98f846a053cc82864ed32,
         type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 20155940112608238}
-    - target: {fileID: 1057710923592022087, guid: eb9a4e40f1d98f846a053cc82864ed32,
+    - target: {fileID: 1057710923592022136, guid: eb9a4e40f1d98f846a053cc82864ed32,
         type: 3}
       propertyPath: cam
       value: 

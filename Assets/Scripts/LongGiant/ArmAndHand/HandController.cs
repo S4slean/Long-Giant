@@ -19,9 +19,19 @@ public class HandController : MonoBehaviour
 
     private Vector3 endPosCache;
 
+    private HandCollisionCallback handCallback;
+
     // Start is called before the first frame update
     void Start()
     {
+        handCallback = GetComponentInChildren<HandCollisionCallback>();
+
+        handCallback.OnCollision += OnHandCollision;
+    }
+
+    private void OnDisable()
+    {
+        handCallback.OnCollision -= OnHandCollision;
     }
 
     // Update is called once per frame
@@ -56,6 +66,18 @@ public class HandController : MonoBehaviour
 
             handPlacer.placeJoint = false;
         }
+    }
+
+    private void LateUpdate()
+    {
+#if UNITY_EDITOR
+        Input.ResetTouches();
+#endif
+    }
+
+    public void OnHandCollision(Collision col)
+    {
+        print("touched " + col.collider.name);
     }
 
     public enum State
