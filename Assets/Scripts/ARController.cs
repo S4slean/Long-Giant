@@ -24,6 +24,11 @@ public class ARController : MonoBehaviour
     public GameObject m_shadowPlane;
     public GameObject m_worldGroundPrefab;
     public GameObject m_worldBoundPrefab;
+    public float m_minPlaygroundRadius = 7.5f;
+
+    private GameObject m_planeDiscovery;
+    private GameObject m_planeGenerator;
+    private GameObject m_pointCloud;
 
     private Anchor m_anchorRoot;
     private GameObject m_worldRootBeacon;
@@ -39,6 +44,10 @@ public class ARController : MonoBehaviour
         {
             m_shadowPlane.SetActive(false);
         }
+
+        m_planeDiscovery = UnityEngine.Object.FindObjectOfType<PlaneDiscoveryGuide>().gameObject;
+        m_planeGenerator = UnityEngine.Object.FindObjectOfType<DetectedPlaneGenerator>().gameObject;
+        m_pointCloud = UnityEngine.Object.FindObjectOfType<PointcloudVisualizer>().gameObject;
     }
 
     private void SetShadowPlanePosition(Vector3 position)
@@ -89,6 +98,20 @@ public class ARController : MonoBehaviour
         go.name = "Bound BACKWARD";
     }
 
+    private void OnTrackingRecovered()
+    {
+        m_planeDiscovery.SetActive(false);
+        m_planeGenerator.SetActive(false);
+        m_pointCloud.SetActive(false);
+    }
+
+    private void OnTrackingLost()
+    {
+        m_planeDiscovery.SetActive(true);
+        m_planeGenerator.SetActive(true);
+        m_pointCloud.SetActive(true);
+    }
+
     public void Update()
     {
         _UpdateApplicationLifecycle();
@@ -132,7 +155,7 @@ public class ARController : MonoBehaviour
             {
                 var tmpPos = new Vector3(pose.position.x, m_anchorRoot.transform.position.y, pose.position.z);
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
-                if (m_radius < 10f)
+                if (m_radius < m_minPlaygroundRadius)
                 {
                     _ShowAndroidToastMessage("Playground radius should be > 1= meter ; currently " + m_radius/10f + " meters");
                     return;
@@ -144,6 +167,9 @@ public class ARController : MonoBehaviour
                 StartCoroutine(RemoveWorldRootBeacon());
 
                 GameManager.gameManager.GetWorldGenerationManager.GenerateWorld(m_anchorRoot.transform.position, m_radius);
+
+                OnTrackingRecovered();
+
                 /*if (OnPlaygroundCreated != null)
                 {
                     OnPlaygroundCreated(m_anchorRoot.transform.position, m_radius);
@@ -180,11 +206,6 @@ public class ARController : MonoBehaviour
         Destroy(m_worldRootBeacon);
     }
 
-    public Anchor getRootAnchor()
-    {
-        return m_anchorRoot;
-    }
-
     // Create a post at a position
     // Pose pose = new Pose(position, rotation);
     // Anchor anchor = plane.CreateAnchor(pose);
@@ -194,10 +215,12 @@ public class ARController : MonoBehaviour
     {
         if (Session.Status != SessionStatus.Tracking)
         {
+            OnTrackingLost();
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
         }
         else
         {
+            OnTrackingRecovered();
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
