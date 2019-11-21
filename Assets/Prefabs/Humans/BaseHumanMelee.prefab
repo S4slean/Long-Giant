@@ -443,15 +443,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 8623977329504294227}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 1
+  minimumForceToBeDestroyed: 5
   objectDamagingMass: 0.1
   objectBodyMass: 0.1
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   moveSpeed: 100
   attackType: 0
-  timeBetweenTwoAttack: 0.5
-  damageAmount: 5
+  timeBetweenTwoAttack: 1.5
+  damageAmount: 1
   projectilePrefab: {fileID: 1223247065104284961, guid: 44ce0a680ff5bf544b5faeffa541c09a,
     type: 3}
   rangeAttackDistance: 4

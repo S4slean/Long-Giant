@@ -63,6 +63,8 @@ public class WorldGenerationManager
         }
 
         giantConstruction.GenerateNeededResourcesDictionary(GenerateObjective());
+
+        GameManager.gameManager.SetGiantConstruction(giantConstruction);
         DebugAllResourcesQuantities();
     }
 

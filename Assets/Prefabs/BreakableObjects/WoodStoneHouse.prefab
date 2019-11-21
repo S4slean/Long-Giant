@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 401679223239714762}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 60
+  minimumForceToBeDestroyed: 20
   objectDamagingMass: 2
   objectBodyMass: 2
   minimumRotationSpeedOnThrow: 180
@@ -86,10 +86,15 @@ MonoBehaviour:
   - resourceType: 0
     quantity: 2
   - resourceType: 1
-    quantity: 3
+    quantity: 2
+  - resourceType: 2
+    quantity: 1
   minimumEjectionForce: 0.3
   maximumEjectionForce: 0.5
   resourcesSpawnDistanceFromObject: 0.075
+  isSpawner: 1
+  spawningOffset: 1
+  numberOfHumanSpawnedOnDestroy: 3
 --- !u!1001 &1702380773850545523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -155,6 +160,16 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: a1f40066be2e7c74bb55097aaec1053f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: a1f40066be2e7c74bb55097aaec1053f,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: a1f40066be2e7c74bb55097aaec1053f,
+        type: 3}
+      propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

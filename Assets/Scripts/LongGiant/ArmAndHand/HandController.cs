@@ -55,6 +55,7 @@ public class HandController : MonoBehaviour
                 state = State.Smash;
                 SetJointActive(false);
                 OpenHand(true);
+                handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
             }
         }
 
@@ -174,6 +175,7 @@ public class HandController : MonoBehaviour
             else
             {
                 state = State.Smash;
+                handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
             }
 
             handPlacer.placeJoint = true;
