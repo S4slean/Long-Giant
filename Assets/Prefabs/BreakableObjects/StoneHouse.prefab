@@ -78,7 +78,8 @@ MonoBehaviour:
   objectBody: {fileID: 2760016204539950550}
   physicalObjectInteractionsType: 3
   minimumForceToBeDestroyed: 60
-  objectMass: 2
+  objectDamagingMass: 1
+  objectBodyMass: 1
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   allResourcesSpawnedOnDestroy:
@@ -89,6 +90,9 @@ MonoBehaviour:
   minimumEjectionForce: 3
   maximumEjectionForce: 5
   resourcesSpawnDistanceFromObject: 0.5
+  isSpawner: 0
+  spawningOffset: 1
+  numberOfHumanSpawnedOnDestroy: 0
 --- !u!1001 &1673797954585624672
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -36,6 +36,10 @@ public class GameManager : MonoBehaviour
     [Header("Important References")]
     [SerializeField] GiantConstructionScript giantConstruction = default;
     public GiantConstructionScript GetGiantConstruction { get { return giantConstruction; } }
+    public void SetGiantConstruction(GiantConstructionScript newConstruction)
+    {
+        giantConstruction = newConstruction;
+    }
 
     [SerializeField] Transform allGameObjectsParent = default;
     public Transform GetAllGameObjectsParent { get { return allGameObjectsParent; } }

@@ -122,11 +122,12 @@ public class HumanScript : PhysicalObjectScript
         transform.rotation = Quaternion.Euler(0, 90 - rotY, 0);
     }
 
-    public void Update()
+    public override void Update()
     {
-        // WARNING : To reapply when pendingDestroy on protected (override Update would be better)
-        /*if (pendingDestroy)
-            DestroyPhysicalObject();*/
+        base.Update();
+
+        if (pendingDestroy)
+            return;
 
         if (!canAct)
             return;
