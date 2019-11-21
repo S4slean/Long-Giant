@@ -25,7 +25,7 @@ public class SpawnGameobjectOnTouch : MonoBehaviour
     {
 
         Touch touch;
-        if (Input.touchCount < 2)
+        if (Input.touchCount < 2 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
             return;
         }
@@ -50,5 +50,13 @@ public class SpawnGameobjectOnTouch : MonoBehaviour
 
             newGo.transform.position = position;
         }
+    }
+
+
+    private void LateUpdate()
+    {
+#if UNITY_EDITOR
+        Input.ResetTouches();
+#endif
     }
 }
