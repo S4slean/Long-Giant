@@ -123,7 +123,7 @@ GameObject:
   - component: {fileID: 8623977329504294225}
   - component: {fileID: 5826910413080086412}
   m_Layer: 0
-  m_Name: BaseHuman
+  m_Name: BaseHumanRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   moveSpeed: 100
-  attackType: 0
+  attackType: 1
   timeBetweenTwoAttack: 0.5
   damageAmount: 5
   projectilePrefab: {fileID: 1223247065104284961, guid: 44ce0a680ff5bf544b5faeffa541c09a,
@@ -197,7 +197,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8623977329504294229}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 64626606fa7c0224ca7c3624dcf2995d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.2

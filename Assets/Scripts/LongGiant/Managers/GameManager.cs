@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
         if (giantConstruction != null)
             giantConstruction.SetUp();
+
+        humanSpawningManager.SetUp();
     }
 
     [Header("Physical Managers")]
@@ -27,6 +29,9 @@ public class GameManager : MonoBehaviour
     [Header("Important References")]
     [SerializeField] GiantConstructionScript giantConstruction = default;
     public GiantConstructionScript GetGiantConstruction { get { return giantConstruction; } }
+
+    [SerializeField] HumanSpawningManager humanSpawningManager = default;
+    public HumanSpawningManager GetHumanSpawningManager { get { return humanSpawningManager; } }
 
     [SerializeField] Transform allGameObjectsParent = default;
     public Transform GetAllGameObjectsParent { get { return allGameObjectsParent; } }
@@ -52,8 +57,7 @@ public class GameManager : MonoBehaviour
 
         return infos;
     }
-
-
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
@@ -61,6 +65,8 @@ public class GameManager : MonoBehaviour
             if (giantConstruction != null)
                 giantConstruction.ReceiveDamages(10);
         }
+
+        humanSpawningManager.UpdateSpawningSystem();
     }
 
     private void LateUpdate()
