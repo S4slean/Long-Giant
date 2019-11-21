@@ -20,6 +20,7 @@ public class ARController : MonoBehaviour
     public GameObject m_worldOriginPrefab;
     public GameObject m_shadowPlane;
     public GameObject m_terrainPlane;
+    public GameObject m_worldBoundPrefab;
 
     private Anchor m_anchorRoot;
     private GameObject m_worldRootBeacon;
@@ -39,8 +40,52 @@ public class ARController : MonoBehaviour
         Debug.Log("Radius is: " + m_radius);
         m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
         m_shadowPlane.transform.position = position;
-        m_terrainPlane.transform.localScale = new Vector3(m_radius * 1.1f * 2.0f, 0.04f, m_radius * 1.1f * 2.0f);
+        float worldSize = m_radius * 1.1f * 2.0f;
+        m_terrainPlane.transform.localScale = new Vector3(worldSize, 0.04f, worldSize);
         m_shadowPlane.SetActive(true);
+
+        GameObject go;
+        Vector3 size = new Vector3(worldSize * 2.0f, 10.0f, worldSize * 2.0f);
+        Vector3 center = new Vector3(position.x, position.y + (size.y / 2.0f) - 0.1f, position.z);
+
+        /// ====================== ///
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, -size.y / 2.0f, 0), Quaternion.identity);
+        go.transform.localScale = new Vector3(size.x, 0.2f, size.z);
+        go.transform.SetParent(m_anchorRoot.transform);
+        go.layer = 0;
+        go.name = "Bound DOWN";
+
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, size.y / 2.0f, 0), Quaternion.identity);
+        go.transform.localScale = new Vector3(size.x, 0.2f, size.z);
+        go.transform.SetParent(m_anchorRoot.transform);
+        go.layer = 8;
+        go.name = "Bound UP";
+
+        /// ====================== ///
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, -size.z / 2.0f), Quaternion.identity);
+        go.transform.localScale = new Vector3(size.x, size.y, 0.2f);
+        go.transform.SetParent(m_anchorRoot.transform);
+        go.layer = 8;
+        go.name = "Bound LEFT";
+
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, size.x / 2.0f), Quaternion.identity);
+        go.transform.localScale = new Vector3(size.x, size.y, 0.2f);
+        go.transform.SetParent(m_anchorRoot.transform);
+        go.layer = 8;
+        go.name = "Bound RIGHT";
+
+        /// ====================== ///
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(-size.x / 2.0f, 0, 0), Quaternion.identity);
+        go.transform.localScale = new Vector3(0.2f, size.y, size.z);
+        go.transform.SetParent(m_anchorRoot.transform);
+        go.name = "Bound FOREWARD";
+        go.layer = 8;
+
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(size.x / 2.0f, 0, 0), Quaternion.identity);
+        go.transform.localScale = new Vector3(0.2f, size.y, size.z);
+        go.transform.SetParent(m_anchorRoot.transform);
+        go.name = "Bound BACKWARD";
+        go.layer = 8;
     }
 
     public void Update()
@@ -69,12 +114,14 @@ public class ARController : MonoBehaviour
                 return;
             }
 
-            Pose pose = new Pose(hit.point, Quaternion.LookRotation(hit.normal));
+            //Pose pose = new Pose(hit.point, Quaternion.LookRotation(hit.normal));
+            Pose pose = new Pose(hit.point, Quaternion.identity);
 
             if (m_anchorRoot == null) // Is first touch
             {
                 m_anchorRoot = Session.CreateAnchor(pose);
                 m_anchorRoot.gameObject.name = "Root Anchor";
+                //m_anchorRoot.transform.rotation = Quaternion.identity;
                 m_anchorRoot.transform.SetParent(m_arCoreDevice.transform);
 
                 m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90.0f, 0, 0));
@@ -85,6 +132,10 @@ public class ARController : MonoBehaviour
             {
                 var tmpPos = new Vector3(pose.position.x, m_anchorRoot.transform.position.y, pose.position.z);
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
+                /*if (m_radius < 1f) // TODO: uncomment this when tests are done
+                {
+                    return;
+                }*/
                 m_isInitied = true;
                 SetShadowPlanePosition(m_anchorRoot.transform.position);
 

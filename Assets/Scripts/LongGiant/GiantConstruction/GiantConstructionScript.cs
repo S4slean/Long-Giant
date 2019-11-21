@@ -16,7 +16,6 @@ public class GiantConstructionScript : MonoBehaviour
             currentStoreyParameters = allConstructionStoreys[currentStoryCounter];
     }*/
     [Header("Construction Parameters")]
-    [SerializeField] List<ResourceWithQuantity> allNeededResources = new List<ResourceWithQuantity>();
     Dictionary<ResourceType, int> allNeededResourcesDictionnary = new Dictionary<ResourceType, int>();
     Dictionary<ResourceType, int> currentlyStoredResourcesDictionary = new Dictionary<ResourceType, int>();
 
@@ -51,32 +50,25 @@ public class GiantConstructionScript : MonoBehaviour
 
         setedUp = true;
 
-        allNeededResourcesDictionnary = new Dictionary<ResourceType, int>();
-        foreach(ResourceWithQuantity neededResource in allNeededResources)
-        {
-            if (neededResource.quantity == 0)
-                continue;
-
-            if (!allNeededResourcesDictionnary.ContainsKey(neededResource.resourceType))
-            {
-                allNeededResourcesDictionnary.Add(neededResource.resourceType, neededResource.quantity);
-
-                currentlyStoredResourcesDictionary.Add(neededResource.resourceType, 0);
-
-                ResourceSingleInformationsUI newInfoUI = Instantiate(singleInformationsUIPrefab, singleInformationsUIParent);
-
-                newInfoUI.SetUp(GameManager.gameManager.GetResourceDisplayInformations(neededResource.resourceType));
-                newInfoUI.UpdateText(0, neededResource.quantity);
-
-                informations.Add(neededResource.resourceType, newInfoUI);
-            }
-        }
-
         remainingDamagesBeforeNextResourceLoss = damagesStepToLoseOneResource;
+    }
+
+    public void GenerateNeededResourcesDictionary(Dictionary<ResourceType, int> allNeededResources)
+    {
+        allNeededResourcesDictionnary = allNeededResources;
+        foreach (ResourceType resourceType in allNeededResourcesDictionnary.Keys)
+        {
+            currentlyStoredResourcesDictionary.Add(resourceType, 0);
+            ResourceSingleInformationsUI newInfoUI = Instantiate(singleInformationsUIPrefab, singleInformationsUIParent);
+            newInfoUI.SetUp(GameManager.gameManager.GetResourceDisplayInformations(resourceType));
+            newInfoUI.UpdateText(0, allNeededResources[resourceType]);
+
+            informations.Add(resourceType, newInfoUI);
+        }
 
         int informationsCount = informations.Count;
         int counter = 0;
-        foreach(ResourceType resourceType in informations.Keys)
+        foreach (ResourceType resourceType in informations.Keys)
         {
             informations[resourceType].transform.localPosition = new Vector3(0, spaceBetweenTwoLines * (informations.Count - 1) * 0.5f - counter * spaceBetweenTwoLines, 0);
 

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6541917628068081316}
   m_LocalRotation: {x: -0, y: -0.38258484, z: -0, w: 0.92392045}
   m_LocalPosition: {x: 1.46, y: 0.78, z: -4.29}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_Children:
   - {fileID: 433459838753437817}
   m_Father: {fileID: 0}
@@ -78,7 +78,8 @@ MonoBehaviour:
   objectBody: {fileID: 6541917628068081314}
   physicalObjectInteractionsType: 3
   minimumForceToBeDestroyed: 60
-  objectMass: 2
+  objectDamagingMass: 1
+  objectBodyMass: 1
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   allResourcesSpawnedOnDestroy:
@@ -89,6 +90,9 @@ MonoBehaviour:
   minimumEjectionForce: 3
   maximumEjectionForce: 5
   resourcesSpawnDistanceFromObject: 0.5
+  isSpawner: 0
+  spawningOffset: 1
+  numberOfHumanSpawnedOnDestroy: 0
 --- !u!1001 &4861989444293645155
 PrefabInstance:
   m_ObjectHideFlags: 0

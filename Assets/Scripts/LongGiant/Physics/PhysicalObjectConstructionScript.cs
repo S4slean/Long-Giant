@@ -16,6 +16,7 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
 
     [Header("Construction")]
     [SerializeField] List<ResourceWithQuantity> allResourcesSpawnedOnDestroy = new List<ResourceWithQuantity>();
+    public List<ResourceWithQuantity> GetAllResourcesSpawnedOnDestroy { get { return allResourcesSpawnedOnDestroy; } }
     [SerializeField] float minimumEjectionForce = 5f;
     [SerializeField] float maximumEjectionForce = 10f;
     [SerializeField] float resourcesSpawnDistanceFromObject = 0.5f;
