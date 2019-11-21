@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,6 +13,8 @@ using GoogleARCore.Examples.Common;
 
 public class ARController : MonoBehaviour
 {
+    public Action<Vector3, float> OnPlaygroundCreated;
+
     public Camera playerCamera;
 
     private bool m_IsQuitting = false;
@@ -19,7 +22,7 @@ public class ARController : MonoBehaviour
     public GameObject m_arCoreDevice;
     public GameObject m_worldOriginPrefab;
     public GameObject m_shadowPlane;
-    public GameObject m_terrainPlane;
+    public GameObject m_worldGroundPrefab;
     public GameObject m_worldBoundPrefab;
 
     private Anchor m_anchorRoot;
@@ -32,60 +35,58 @@ public class ARController : MonoBehaviour
         // Enable ARCore to target 60fps camera capture frame rate on supported devices.
         // Note, Application.targetFrameRate is ignored when QualitySettings.vSyncCount != 0.
         Application.targetFrameRate = 60;
-        m_shadowPlane.SetActive(false);
+        if (m_shadowPlane != null)
+        {
+            m_shadowPlane.SetActive(false);
+        }
     }
 
     private void SetShadowPlanePosition(Vector3 position)
     {
         Debug.Log("Radius is: " + m_radius);
-        m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
-        m_shadowPlane.transform.position = position;
+        if (m_shadowPlane != null)
+        {
+            m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
+            m_shadowPlane.transform.position = position;
+            m_shadowPlane.SetActive(true);
+        }
+
         float worldSize = m_radius * 1.1f * 2.0f;
-        m_terrainPlane.transform.localScale = new Vector3(worldSize, 0.04f, worldSize);
-        m_shadowPlane.SetActive(true);
+        GameObject terrainPlane = Instantiate(m_worldGroundPrefab, position, Quaternion.identity, m_anchorRoot.transform);
+        terrainPlane.transform.localScale = new Vector3(worldSize, 0.04f, worldSize);
+        terrainPlane.name = "WorldGround";
 
         GameObject go;
         Vector3 size = new Vector3(worldSize * 2.0f, 10.0f, worldSize * 2.0f);
         Vector3 center = new Vector3(position.x, position.y + (size.y / 2.0f) - 0.1f, position.z);
 
         /// ====================== ///
-        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, -size.y / 2.0f, 0), Quaternion.identity);
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, -size.y / 2.0f, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, 0.2f, size.z);
-        go.transform.SetParent(m_anchorRoot.transform);
         go.layer = 0;
         go.name = "Bound DOWN";
 
-        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, size.y / 2.0f, 0), Quaternion.identity);
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, size.y / 2.0f, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, 0.2f, size.z);
-        go.transform.SetParent(m_anchorRoot.transform);
-        go.layer = 8;
         go.name = "Bound UP";
 
         /// ====================== ///
-        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, -size.z / 2.0f), Quaternion.identity);
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, -size.z / 2.0f), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, size.y, 0.2f);
-        go.transform.SetParent(m_anchorRoot.transform);
-        go.layer = 8;
         go.name = "Bound LEFT";
 
-        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, size.x / 2.0f), Quaternion.identity);
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, size.x / 2.0f), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, size.y, 0.2f);
-        go.transform.SetParent(m_anchorRoot.transform);
-        go.layer = 8;
         go.name = "Bound RIGHT";
 
         /// ====================== ///
-        go = Instantiate(m_worldBoundPrefab, center + new Vector3(-size.x / 2.0f, 0, 0), Quaternion.identity);
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(-size.x / 2.0f, 0, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(0.2f, size.y, size.z);
-        go.transform.SetParent(m_anchorRoot.transform);
         go.name = "Bound FOREWARD";
-        go.layer = 8;
 
-        go = Instantiate(m_worldBoundPrefab, center + new Vector3(size.x / 2.0f, 0, 0), Quaternion.identity);
+        go = Instantiate(m_worldBoundPrefab, center + new Vector3(size.x / 2.0f, 0, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(0.2f, size.y, size.z);
-        go.transform.SetParent(m_anchorRoot.transform);
         go.name = "Bound BACKWARD";
-        go.layer = 8;
     }
 
     public void Update()
@@ -111,17 +112,16 @@ public class ARController : MonoBehaviour
         {
             if (m_isInitied) // The two points were set
             {
+                SonarRings();
                 return;
             }
 
-            //Pose pose = new Pose(hit.point, Quaternion.LookRotation(hit.normal));
             Pose pose = new Pose(hit.point, Quaternion.identity);
 
             if (m_anchorRoot == null) // Is first touch
             {
                 m_anchorRoot = Session.CreateAnchor(pose);
                 m_anchorRoot.gameObject.name = "Root Anchor";
-                //m_anchorRoot.transform.rotation = Quaternion.identity;
                 m_anchorRoot.transform.SetParent(m_arCoreDevice.transform);
 
                 m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90.0f, 0, 0));
@@ -132,29 +132,40 @@ public class ARController : MonoBehaviour
             {
                 var tmpPos = new Vector3(pose.position.x, m_anchorRoot.transform.position.y, pose.position.z);
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
-                /*if (m_radius < 1f) // TODO: uncomment this when tests are done
+                /*if (m_radius < 1f)
                 {
+                    _ShowAndroidToastMessage("Playground radius should be > 1= meter ; currently " + m_radius + " meters");
                     return;
                 }*/
                 m_isInitied = true;
                 SetShadowPlanePosition(m_anchorRoot.transform.position);
 
+                SonarRings();
                 StartCoroutine(RemoveWorldRootBeacon());
-                StartCoroutine(SonarRings());
+
+                if (OnPlaygroundCreated != null)
+                {
+                    OnPlaygroundCreated(m_anchorRoot.transform.position, m_radius);
+                }
             }
         }
     }
 
-    IEnumerator SonarRings()
+    void SonarRings()
     {
-        for (int i = 0; i < 3; i++)
+        foreach (var item in UnityEngine.Object.FindObjectsOfType<SimpleSonarShader_Object>())
         {
-            foreach (var item in Object.FindObjectsOfType<SimpleSonarShader_Object>())
-            {
-                yield return new WaitForSeconds(0.1f);
-                item.StartSonarRing(m_anchorRoot.transform.position, 4.0f);
-            }
-            yield return new WaitForSeconds(i * 0.3f);
+            StartCoroutine(SonarRing(item));
+        }
+    }
+
+    IEnumerator SonarRing(SimpleSonarShader_Object item)
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            item.StartSonarRing(m_anchorRoot.transform.position, 4.0f);
+            yield return new WaitForSeconds(i * i * 1.7f);
+            //yield return new WaitForSeconds(0.1f);
         }
     }
 
