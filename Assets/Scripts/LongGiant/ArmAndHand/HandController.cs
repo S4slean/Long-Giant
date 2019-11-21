@@ -45,7 +45,7 @@ public class HandController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Updatet()
+    void Update()
     {
         if (state == State.Grabbing)
         {
@@ -108,9 +108,7 @@ public class HandController : MonoBehaviour
             SetJointActive(false);
             grabbedObj.GetComponent<Rigidbody>().useGravity = true;
 
-            Physics.IgnoreCollision(grabbedObj.GetComponent<Collider>(), handBody.GetComponent<Collider>(), true);
-
-            StartCoroutine(RestoreCollisions(grabbedObj.GetComponent<Collider>(), handBody.GetComponent<Collider>()));
+            StartCoroutine(CollisionsCoroutine(grabbedObj.GetComponent<Collider>()));
 
             grabbedObj.Throw(ray.direction, throwForce);
             grabbedObj = null;
@@ -125,11 +123,19 @@ public class HandController : MonoBehaviour
         }
     }
 
-    IEnumerator RestoreCollisions(Collider c1, Collider c2)
+    IEnumerator CollisionsCoroutine(Collider c1)
     {
-        yield return new WaitForSeconds(1);
+        foreach (var item in handBody.GetComponentsInChildren<Collider>())
+        {
+            Physics.IgnoreCollision(c1, item, true);
+        }
 
-        Physics.IgnoreCollision(c1, c2, false);
+        yield return new WaitForSeconds(2);
+
+        foreach (var item in handBody.GetComponentsInChildren<Collider>())
+        {
+            Physics.IgnoreCollision(c1, item, false);
+        }
     }
 
     private void LateUpdate()
