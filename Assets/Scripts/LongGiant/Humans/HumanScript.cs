@@ -99,6 +99,9 @@ public class HumanScript : PhysicalObjectScript
 
         if (humanBubbleAnimator != null)
             humanBubbleAnimator.SetTrigger("fleeing");
+
+        if (fleeSoundSource != null)
+            fleeSoundSource.Play();
     }
 
     public void UpdateMove()
@@ -161,10 +164,16 @@ public class HumanScript : PhysicalObjectScript
 
         if (humanBubbleAnimator != null)
             humanBubbleAnimator.SetTrigger("attack");
+
+        if (preparingAttackSoundSource != null)
+            preparingAttackSoundSource.Play();
     }
 
     public void LaunchTrueAttack()
     {
+        if (attackSoundSource != null)
+            attackSoundSource.Play();
+
         preparingAttack = false;
 
         switch (attackType)
@@ -221,6 +230,10 @@ public class HumanScript : PhysicalObjectScript
     [SerializeField] Transform rendererParent = default;
     [SerializeField] Animator humanAnimator = default;
     [SerializeField] Animator humanBubbleAnimator = default;
+
+    [SerializeField] AudioSource preparingAttackSoundSource = default;
+    [SerializeField] AudioSource attackSoundSource = default;
+    [SerializeField] AudioSource fleeSoundSource = default;
         
     public void LookTowardConstruction()
     {
