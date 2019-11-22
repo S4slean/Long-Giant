@@ -24,6 +24,8 @@ public class PhysicalObjectScript : MonoBehaviour
     [SerializeField] float minimumRotationSpeedOnThrow = 180;
     [SerializeField] float maximumRotationSpeedOnThrow = 270;
 
+    private ParticleSystem poofPS;
+
     bool setedUp;
     public virtual void SetUp()
     {
@@ -34,6 +36,8 @@ public class PhysicalObjectScript : MonoBehaviour
 
         if (objectBody == null)
             objectBody = GetComponent<Rigidbody>();
+
+        poofPS = GetComponentInChildren<ParticleSystem>();
 
         objectBody.mass = objectBodyMass;
     }
@@ -81,6 +85,9 @@ public class PhysicalObjectScript : MonoBehaviour
 
     public virtual void DestroyPhysicalObject()
     {
+        poofPS.transform.parent = null;
+        poofPS.Play();
+
         Destroy(gameObject);
     }
 

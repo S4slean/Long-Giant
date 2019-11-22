@@ -14,11 +14,15 @@ public class WorldElementPrefab : MonoBehaviour
         allElements = new PhysicalObjectConstructionScript[0];
 
         allElements = GetComponentsInChildren<PhysicalObjectConstructionScript>();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
     }
 
     public void SetUpAllChildrenElements()
     {
-        foreach(PhysicalObjectConstructionScript element in allElements)
-            element.SetUp();
+        foreach (PhysicalObjectConstructionScript element in allElements)
+                element.SetUp();
     }
 }

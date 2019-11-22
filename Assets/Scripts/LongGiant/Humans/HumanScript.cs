@@ -35,6 +35,12 @@ public class HumanScript : PhysicalObjectScript
 
         if (gameManager.gameFinished)
             Flee();
+
+        if(humanBubbleAnimator != null && !gameManager.gameFinished)
+        {
+            humanBubbleAnimator.SetInteger("angryCounter", Random.Range(0, 2));
+            humanBubbleAnimator.SetTrigger("spawned");
+        }
     }
 
     public override void DestroyPhysicalObject()
@@ -64,6 +70,13 @@ public class HumanScript : PhysicalObjectScript
     {
         canAct = false;
         objectBody.freezeRotation = false;
+
+        isWalking = false;
+        if (humanAnimator != null)
+            humanAnimator.SetBool("walking", isWalking);
+
+        if (humanBubbleAnimator != null)
+            humanBubbleAnimator.SetTrigger("grabbed");
     }
 
     public void Flee()
@@ -71,8 +84,6 @@ public class HumanScript : PhysicalObjectScript
         fleeing = true;
         if (humanWeapon != null)
         {
-            //humanWeapon.transform.position += Vector3.up * 0.3f;
-
             humanWeapon.isKinematic = false;
             humanWeapon.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
 
@@ -86,6 +97,9 @@ public class HumanScript : PhysicalObjectScript
             humanWeapon.AddForce(randomThrowVelocity * Random.Range(250f, 300f));
             humanWeapon.AddTorque(Random.onUnitSphere * Random.Range(180f, 270f));
         }
+
+        if (humanBubbleAnimator != null)
+            humanBubbleAnimator.SetTrigger("fleeing");
     }
 
     public void UpdateMove()
@@ -147,6 +161,9 @@ public class HumanScript : PhysicalObjectScript
             humanAnimator.SetTrigger("attack");
         else
             LaunchTrueAttack();
+
+        if (humanBubbleAnimator != null)
+            humanBubbleAnimator.SetTrigger("attack");
     }
 
     public void LaunchTrueAttack()
@@ -206,6 +223,7 @@ public class HumanScript : PhysicalObjectScript
     }
     [SerializeField] Transform rendererParent = default;
     [SerializeField] Animator humanAnimator = default;
+    [SerializeField] Animator humanBubbleAnimator = default;
         
     public void LookTowardConstruction()
     {
@@ -221,6 +239,11 @@ public class HumanScript : PhysicalObjectScript
 
     public override void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StopAct();
+        }
+
         base.Update();
 
         if (pendingDestroy)

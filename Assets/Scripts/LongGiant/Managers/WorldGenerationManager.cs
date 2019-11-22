@@ -85,6 +85,7 @@ public class WorldGenerationManager
             randomOffset.Normalize();
 
             newObject = Object.Instantiate(pickedPrefab, centerPosition + fillingPos + randomOffset * Random.Range(0, randomPositionAmplitude), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
+            newObject.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
         }
 
         giantConstruction.GenerateNeededResourcesDictionary(GenerateObjective());
