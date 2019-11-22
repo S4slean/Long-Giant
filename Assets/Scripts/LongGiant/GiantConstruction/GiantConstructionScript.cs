@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GiantConstructionScript : MonoBehaviour
 {
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -12,7 +12,7 @@ public class GiantConstructionScript : MonoBehaviour
             constructionFinished = true;
             constructionAnimator.SetBool("won", true);
         }
-    }
+    }*/
 
     bool constructionFinished = false;
 

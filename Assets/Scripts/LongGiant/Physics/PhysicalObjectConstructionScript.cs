@@ -74,6 +74,9 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
         {
             pickedHumanPrefab = spawningManager.GetRandomHumanPrefab();
 
+            if (pickedHumanPrefab == null)
+                continue;
+
             randomThrowVelocity = Random.onUnitSphere;
             randomThrowVelocity.y = Mathf.Abs(randomThrowVelocity.y);
 
