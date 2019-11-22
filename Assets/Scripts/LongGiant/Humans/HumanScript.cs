@@ -115,7 +115,7 @@ public class HumanScript : PhysicalObjectScript
     {
         Vector3 moveDirection = giantConstruction.transform.position - transform.position;
         moveDirection.y = 0;
-        Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : 1);
+        Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : GetDistanceWithGiant < minDistanceWithConstruction ? -1 : 1);
         move.y = objectBody.velocity.y;
         objectBody.velocity = move;
     }
@@ -125,6 +125,9 @@ public class HumanScript : PhysicalObjectScript
         get
         {
             if (fleeing)
+                return true;
+
+            if (GetDistanceWithGiant < minDistanceWithConstruction)
                 return true;
 
             switch (attackType)
@@ -144,9 +147,10 @@ public class HumanScript : PhysicalObjectScript
     [SerializeField] HumanAttackType attackType = HumanAttackType.Melee;
     [SerializeField] float timeBetweenTwoAttack = 1;
     [SerializeField] int damageAmount = 5;
-    [SerializeField] float meleeAttackDistance = 2.75f;
+    [SerializeField] float minDistanceWithConstruction = 4;
+    [SerializeField] float meleeAttackDistance = 5;
     [SerializeField] HumanProjectileScript projectilePrefab = default;
-    [SerializeField] float rangeAttackDistance = 4;
+    [SerializeField] float rangeAttackDistance = 8;
     [SerializeField] float rangeShootingOffset = 0.1f;
     [SerializeField] float rangeShootingForce = 5;
     //bool isInConstructionZone = false;
