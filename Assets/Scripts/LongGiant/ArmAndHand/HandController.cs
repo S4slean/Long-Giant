@@ -131,7 +131,7 @@ public class HandController : MonoBehaviour
 
             grabbedObj = null;
 
-            handPhysicalObject.physicalObjectInteractionsType = lastInteractionType;
+            handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.None;
 
             OpenHand(true);
 
