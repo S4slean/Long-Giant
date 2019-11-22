@@ -70,7 +70,7 @@ public class ARController : MonoBehaviour
         float worldSize = m_radius * 1.1f * 2.0f;
 
         GameObject go;
-        Vector3 size = new Vector3(worldSize * 2.0f, 20.0f, worldSize * 2.0f);
+        Vector3 size = new Vector3(worldSize * 2.0f, 50.0f, worldSize * 2.0f);
         Vector3 center = new Vector3(rootPosition.x, rootPosition.y + (size.y / 2.0f) - 0.1f, rootPosition.z);
 
         /// ====================== ///
@@ -151,6 +151,8 @@ public class ARController : MonoBehaviour
                 m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90f, 0, 0));
                 m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);
                 m_worldRootBeacon.transform.SetParent(m_anchorRoot.transform);
+
+                m_snackbarManager.Close();
 
                 StartCoroutine(DisplaySnackbar("Touch to set the play area radius"));
             }
