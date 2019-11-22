@@ -123,7 +123,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d902058f8c1ea8b46b66cdfa22d5ddbb, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -167,7 +167,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -250,7 +250,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: cd4d4721a60dfb54b825c523f6963bef, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -294,7 +294,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -375,9 +375,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d902058f8c1ea8b46b66cdfa22d5ddbb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: c0eddfb57cf1b1443acf4f4d280b2330, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -421,7 +421,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -773,9 +773,10 @@ MonoBehaviour:
   objectBodyMass: 0.3
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
+  randomSound: {fileID: 7988149336487159791}
   moveSpeed: 100
   attackType: 1
-  timeBetweenTwoAttack: 2
+  timeBetweenTwoAttack: 4
   damageAmount: 2
   meleeAttackDistance: 5
   projectilePrefab: {fileID: 1223247065104284961, guid: 44ce0a680ff5bf544b5faeffa541c09a,
@@ -895,3 +896,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6458630640573623097}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7988149336487159791 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3997561661556706518, guid: 44c2314a389d95a44b7a412e59604608,
+    type: 3}
+  m_PrefabInstance: {fileID: 6458630640573623097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f1f139dea310bb459881802fbf97071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

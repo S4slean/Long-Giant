@@ -29,6 +29,8 @@ public class HandController : MonoBehaviour
 
     private PhysicalObjectScript grabbedObj;
 
+    PhysicalObjectInteractionsType lastInteractionType;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -129,7 +131,7 @@ public class HandController : MonoBehaviour
 
             grabbedObj = null;
 
-            handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
+            handPhysicalObject.physicalObjectInteractionsType = lastInteractionType;
 
             OpenHand(true);
 
@@ -156,7 +158,7 @@ public class HandController : MonoBehaviour
 
         if (physObj == null) yield break;
 
-        physObj.physicalObjectInteractionsType = PhysicalObjectInteractionsType.DealAndReceiveDamages;
+        physObj.physicalObjectInteractionsType = lastInteractionType;
     }
 
     private void LateUpdate()
@@ -176,6 +178,8 @@ public class HandController : MonoBehaviour
             {
                 grabbedObj = physObj;
 
+                lastInteractionType = grabbedObj.physicalObjectInteractionsType;
+
                 Rigidbody objRB = physObj.GetComponent<Rigidbody>();
                 objRB.useGravity = false;
 
@@ -187,6 +191,9 @@ public class HandController : MonoBehaviour
                 SetJointActive(true);
 
                 state = State.Grabbing;
+
+                if (randomSound != null)
+                    randomSound.PlaySound();
 
 
                 foreach (var item in handBody.GetComponentsInChildren<Collider>())
@@ -257,4 +264,7 @@ public class HandController : MonoBehaviour
         Reaching,
         Grabbing
     }
+
+    [Header("Feedbacks")]
+    [SerializeField] PlayRandomSound randomSound = default;
 }

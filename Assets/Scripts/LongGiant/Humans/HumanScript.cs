@@ -23,6 +23,7 @@ public class HumanScript : PhysicalObjectScript
         spawningManager = gameManager.GetHumanSpawningManager;
         attackFrequenceSystem = new FrequenceSystem(1 / timeBetweenTwoAttack);
         attackFrequenceSystem.SetUp(StartAttack);
+        attackFrequenceSystem.SetFrequenceProgression(0.2f);
 
         if (humanWeapon != null)
         {
@@ -101,7 +102,10 @@ public class HumanScript : PhysicalObjectScript
             humanBubbleAnimator.SetTrigger("fleeing");
 
         if (fleeSoundSource != null)
+        {
+            fleeSoundSource.pitch = Random.Range(0.9f, 1.2f);
             fleeSoundSource.Play();
+        }
     }
 
     public void UpdateMove()
@@ -166,13 +170,19 @@ public class HumanScript : PhysicalObjectScript
             humanBubbleAnimator.SetTrigger("attack");
 
         if (preparingAttackSoundSource != null)
+        {
+            preparingAttackSoundSource.pitch = Random.Range(0.9f, 1.2f);
             preparingAttackSoundSource.Play();
+        }
     }
 
     public void LaunchTrueAttack()
     {
         if (attackSoundSource != null)
+        {
+            attackSoundSource.pitch = Random.Range(0.9f, 1.2f);
             attackSoundSource.Play();
+        }
 
         preparingAttack = false;
 
