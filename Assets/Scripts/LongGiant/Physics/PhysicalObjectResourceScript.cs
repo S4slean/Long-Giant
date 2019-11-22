@@ -27,10 +27,15 @@ public class PhysicalObjectResourceScript : PhysicalObjectScript
             if (giantConstruction != null)
             {
                 giantConstruction.AddResourceToConstruction(resourceType);
+                if (spawnOnDestroy != null)
+                    Instantiate(spawnOnDestroy, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
         }
     }
+
+    [Header("Rendering")]
+    [SerializeField] GameObject spawnOnDestroy = default;
 }
 
 public enum ResourceType

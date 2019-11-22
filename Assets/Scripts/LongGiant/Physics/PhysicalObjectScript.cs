@@ -82,8 +82,11 @@ public class PhysicalObjectScript : MonoBehaviour
 
     public virtual void DestroyPhysicalObject()
     {
-        poofPS.transform.parent = null;
-        poofPS.Play();
+        if (poofPS != null)
+        {
+            poofPS.transform.parent = null;
+            poofPS.Play();
+        }
 
         Destroy(gameObject);
     }
