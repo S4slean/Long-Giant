@@ -97,13 +97,19 @@ MonoBehaviour:
     allPrefabs:
     - prefab: {fileID: 378345663568739344, guid: 9e1ce0cb5a8ca6b4cb07a3f226594271,
         type: 3}
-      probability: 35
+      probability: 30
     - prefab: {fileID: 378345663568739344, guid: bdd18165c8bd2c940bed7391f102eb07,
         type: 3}
-      probability: 25
+      probability: 30
     - prefab: {fileID: 378345663568739344, guid: bf3c7dc1d2389f24dbfdd3782d2057a4,
         type: 3}
-      probability: 50
+      probability: 20
+    - prefab: {fileID: 378345663568739344, guid: 49a770b1e46e4ce4db2c7dc3657249fa,
+        type: 3}
+      probability: 10
+    - prefab: {fileID: 378345663568739344, guid: bdd188fab719cad4ab89f05a3708f82a,
+        type: 3}
+      probability: 10
     fillingPrefabs:
     - prefab: {fileID: 378345663568739344, guid: 6b6f73cc22abb04439400f2028155cbd,
         type: 3}
