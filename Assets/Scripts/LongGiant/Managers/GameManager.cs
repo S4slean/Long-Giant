@@ -5,6 +5,22 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager gameManager;
+    public System.Action OnGameWin;
+    public bool gameFinished;
+    public void SetGameFinished()
+    {
+        gameFinished = true;
+    }
+
+    private void OnEnable()
+    {
+        OnGameWin += SetGameFinished;
+    }
+
+    private void OnDisable()
+    {
+        OnGameWin -= SetGameFinished;
+    }
 
     private void Awake()
     {
@@ -78,7 +94,8 @@ public class GameManager : MonoBehaviour
                 giantConstruction.ReceiveDamages(10);
         }
 
-        humanSpawningManager.UpdateSpawningSystem();
+        if (!gameFinished)
+            humanSpawningManager.UpdateSpawningSystem();
     }
 
     private void LateUpdate()

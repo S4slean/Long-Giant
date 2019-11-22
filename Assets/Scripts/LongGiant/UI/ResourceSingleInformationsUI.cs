@@ -21,7 +21,7 @@ public class ResourceSingleInformationsUI : MonoBehaviour
 
     public void UpdateText(int currentValue, int maxValue)
     {
-        resourceText.text = typeName + " : " + currentValue + "/" + maxValue;
+        resourceText.text = /*typeName + " : " + */currentValue + "/" + maxValue;
     }
 }
 

@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class GiantConstructionScript : MonoBehaviour
 {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameManager.gameManager.OnGameWin?.Invoke();
+            constructionFinished = true;
+            constructionAnimator.SetBool("won", true);
+        }
+    }
+
     bool constructionFinished = false;
 
     [Header("References")]
@@ -137,14 +147,18 @@ public class GiantConstructionScript : MonoBehaviour
         {
             if (CheckIfConstructionFinished())
             {
-                Debug.Log("Construction finished !");
+                GameManager.gameManager.OnGameWin?.Invoke();
                 constructionFinished = true;
+                constructionAnimator.SetBool("won", true);
             }
         }
     }
 
     public void EjectRandomResource()
     {
+        if (constructionFinished)
+            return;
+
         List<ResourceType> availableResourcesTypes = new List<ResourceType>();
 
         foreach(ResourceType storedResourceType in currentlyStoredResourcesDictionary.Keys)
@@ -209,6 +223,9 @@ public class GiantConstructionScript : MonoBehaviour
     #region Damages Management
     public void ReceiveDamages(int damagesAmount)
     {
+        if (constructionFinished)
+            return;
+
         //Debug.Log("Receive damages : " + damagesAmount);
         remainingDamagesBeforeNextResourceLoss -= damagesAmount;
 

@@ -2,13 +2,27 @@
 
 public class HumanScript : PhysicalObjectScript
 {
+    private void OnEnable()
+    {
+        GameManager.gameManager.OnGameWin += Flee;    }
+
+    private void OnDisable()
+    {
+        GameManager.gameManager.OnGameWin -= Flee;
+    }
+
     public override void SetUp()
     {
+        GameManager gameManager = GameManager.gameManager;
+
         base.SetUp();
-        giantConstruction = GameManager.gameManager.GetGiantConstruction;
-        spawningManager = GameManager.gameManager.GetHumanSpawningManager;
+        giantConstruction = gameManager.GetGiantConstruction;
+        spawningManager = gameManager.GetHumanSpawningManager;
         attackFrequenceSystem = new FrequenceSystem(1 / timeBetweenTwoAttack);
         attackFrequenceSystem.SetUp(StartAttack);
+
+        if (gameManager.gameFinished)
+            Flee();
     }
 
     public override void DestroyPhysicalObject()
@@ -33,15 +47,25 @@ public class HumanScript : PhysicalObjectScript
     [SerializeField] float moveSpeed = 10;
     bool canAct = true;
     bool isWalking = false;
+    bool fleeing = false;
     public void StopAct()
     {
         canAct = false;
+        objectBody.freezeRotation = false;
     }
+
+    public void Flee()
+    {
+        fleeing = true;
+    }
+
     public void UpdateMove()
     {
         Vector3 moveDirection = giantConstruction.transform.position - transform.position;
         moveDirection.y = 0;
-        objectBody.velocity = moveDirection.normalized * moveSpeed * Time.deltaTime;
+        Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : 1);
+        move.y = objectBody.velocity.y;
+        objectBody.velocity = move;
 
         Debug.DrawRay(transform.position, moveDirection, Color.red);
     }
@@ -50,6 +74,9 @@ public class HumanScript : PhysicalObjectScript
     {
         get
         {
+            if (fleeing)
+                return true;
+
             switch (attackType)
             {
                 case HumanAttackType.Melee:
@@ -122,11 +149,14 @@ public class HumanScript : PhysicalObjectScript
 
     public void LookTowardConstruction()
     {
+        if (!canAct)
+            return;
+
         Vector3 lookDirection = giantConstruction.transform.position - transform.position;
         lookDirection.y = 0;
         lookDirection.Normalize();
         float rotY = Mathf.Atan2(lookDirection.z, lookDirection.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0, 90 - rotY, 0);
+        transform.rotation = Quaternion.Euler(0, 90 - rotY * (fleeing ? -1 : 1), 0);
     }
 
     public override void Update()
@@ -164,13 +194,6 @@ public class HumanScript : PhysicalObjectScript
             UpdateAttackSystem();
         }
     }
-
-    /*private void OnTriggerEnter(Collider other)
-    {
-        GiantConstructionScript giantConstruction = other.GetComponent<GiantConstructionScript>();
-        if (giantConstruction != null)
-            isInConstructionZone = true;
-    }*/
 }
 
 public enum HumanAttackType
