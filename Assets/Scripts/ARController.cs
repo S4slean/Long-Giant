@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using GoogleARCore;
@@ -11,10 +9,15 @@ using GoogleARCore.Examples.Common;
     using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
+struct TrackingState
+{
+    public bool previous;
+    public bool current;
+}
+
+
 public class ARController : MonoBehaviour
 {
-    public Action<Vector3, float> OnPlaygroundCreated;
-
     public Camera playerCamera;
 
     public GameObject m_arCoreDevice;
@@ -34,6 +37,8 @@ public class ARController : MonoBehaviour
     private GameObject m_planeDiscovery;
     private GameObject m_planeGenerator;
     private GameObject m_pointCloud;
+
+    private TrackingState m_trackingState;
 
     public void Awake()
     {
@@ -61,9 +66,6 @@ public class ARController : MonoBehaviour
         }
 
         float worldSize = m_radius * 1.1f * 2.0f;
-        /*GameObject terrainPlane = Instantiate(m_worldGroundPrefab, position, Quaternion.identity, m_anchorRoot.transform);
-        terrainPlane.transform.localScale = new Vector3(worldSize, 0.04f, worldSize);
-        terrainPlane.name = "WorldGround";*/
 
         GameObject go;
         Vector3 size = new Vector3(worldSize * 2.0f, 10.0f, worldSize * 2.0f);
@@ -118,6 +120,11 @@ public class ARController : MonoBehaviour
     {
         _UpdateApplicationLifecycle();
 
+        if (m_isInitied) // The two points were set
+        {
+            return;
+        }
+
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
@@ -135,12 +142,6 @@ public class ARController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
         {
-            if (m_isInitied) // The two points were set
-            {
-                SonarRings();
-                return;
-            }
-
             Pose pose = new Pose(hit.point, Quaternion.identity);
 
             if (m_anchorRoot == null) // Is first touch
@@ -150,7 +151,7 @@ public class ARController : MonoBehaviour
                 m_anchorRoot.transform.SetParent(m_arCoreDevice.transform);
                 GameManager.gameManager.SetAllGameObjectsParent(m_anchorRoot.transform);
 
-                m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90.0f, 0, 0));
+                m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90f, 0, 0));
                 m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);
                 m_worldRootBeacon.transform.SetParent(m_anchorRoot.transform);
             }
@@ -160,53 +161,19 @@ public class ARController : MonoBehaviour
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
                 if (m_radius < m_minPlaygroundRadius)
                 {
-                    _ShowAndroidToastMessage("Playground radius should be > 1= meter ; currently " + m_radius/10f + " meters");
+                    _ShowAndroidToastMessage("Playground radius should be >= " + String.Format("{0:0.00}", m_minPlaygroundRadius / 10f) + " meters ; currently " + String.Format("{0:0.00}", m_radius / 10f) + " meters");
                     return;
                 }
                 m_isInitied = true;
                 SetShadowPlanePosition(m_anchorRoot.transform.position);
 
-                //SonarRings();
-                StartCoroutine(RemoveWorldRootBeacon());
+                Destroy(m_worldRootBeacon);
 
                 GameManager.gameManager.GetWorldGenerationManager.GenerateWorld(m_anchorRoot.transform.position, m_radius);
 
                 OnTrackingRecovered();
-
-                /*if (OnPlaygroundCreated != null)
-                {
-                    OnPlaygroundCreated(m_anchorRoot.transform.position, m_radius);
-                }*/
             }
         }
-    }
-
-    void SonarRings()
-    {
-        foreach (var item in UnityEngine.Object.FindObjectsOfType<SimpleSonarShader_Object>())
-        {
-            StartCoroutine(SonarRing(item));
-        }
-    }
-
-    IEnumerator SonarRing(SimpleSonarShader_Object item)
-    {
-        for (int i = 0; i < 12; i++)
-        {
-            item.StartSonarRing(m_anchorRoot.transform.position, 4.0f);
-            yield return new WaitForSeconds(i * i * 1.7f);
-            //yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    IEnumerator RemoveWorldRootBeacon()
-    {
-        while (m_worldRootBeacon.transform.localScale.magnitude > 0.1f)
-        {
-            m_worldRootBeacon.transform.localScale *= 0.85f;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Destroy(m_worldRootBeacon);
     }
 
     // Create a post at a position
@@ -220,7 +187,12 @@ public class ARController : MonoBehaviour
         {
             if (m_isInitied)
             {
-                OnTrackingLost();
+                m_trackingState.previous = m_trackingState.current;
+                m_trackingState.current = false;
+                if (m_trackingState.current != m_trackingState.previous)
+                {
+                    OnTrackingLost();
+                }
             }
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
         }
@@ -228,7 +200,12 @@ public class ARController : MonoBehaviour
         {
             if (m_isInitied)
             {
-                OnTrackingRecovered();
+                m_trackingState.previous = m_trackingState.current;
+                m_trackingState.current = true;
+                if (m_trackingState.current != m_trackingState.previous)
+                {
+                    OnTrackingRecovered();
+                }
             }
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
@@ -248,8 +225,7 @@ public class ARController : MonoBehaviour
         }
         else if (Session.Status.IsError())
         {
-            _ShowAndroidToastMessage(
-                "ARCore encountered a problem connecting.  Please start the app again.");
+            _ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
             m_IsQuitting = true;
             Invoke("_DoQuit", 0.5f);
         }
