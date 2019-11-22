@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class HumanScript : PhysicalObjectScript
 {
@@ -16,10 +17,21 @@ public class HumanScript : PhysicalObjectScript
         GameManager gameManager = GameManager.gameManager;
 
         base.SetUp();
+
+        //GetAllWeaponColliders();
+
         giantConstruction = gameManager.GetGiantConstruction;
         spawningManager = gameManager.GetHumanSpawningManager;
         attackFrequenceSystem = new FrequenceSystem(1 / timeBetweenTwoAttack);
         attackFrequenceSystem.SetUp(StartAttack);
+
+        if (humanWeapon != null)
+        {
+            humanWeapon.isKinematic = true;           
+        }
+
+        foreach (Collider coll in allWeaponColliders)
+            coll.enabled = false;
 
         if (gameManager.gameFinished)
             Flee();
@@ -57,6 +69,23 @@ public class HumanScript : PhysicalObjectScript
     public void Flee()
     {
         fleeing = true;
+        if (humanWeapon != null)
+        {
+            //humanWeapon.transform.position += Vector3.up * 0.3f;
+
+            humanWeapon.isKinematic = false;
+            humanWeapon.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
+
+            foreach (Collider coll in allWeaponColliders)
+                coll.enabled = true;
+
+            Vector3 randomThrowVelocity = Random.onUnitSphere;
+            randomThrowVelocity.y = Mathf.Abs(randomThrowVelocity.y);
+            randomThrowVelocity = Vector3.Slerp(randomThrowVelocity, Vector3.up, 0.5f);
+
+            humanWeapon.AddForce(randomThrowVelocity * Random.Range(250f, 300f));
+            humanWeapon.AddTorque(Random.onUnitSphere * Random.Range(180f, 270f));
+        }
     }
 
     public void UpdateMove()
@@ -144,9 +173,40 @@ public class HumanScript : PhysicalObjectScript
     }
 
     [Header("Rendering")]
+    [SerializeField] Rigidbody humanWeapon = default;
+    [SerializeField] List<Collider> allWeaponColliders = default;
+    [ContextMenu("GetAllWeaponColliders")]
+    public void GetAllWeaponColliders()
+    {
+        allWeaponColliders = new List<Collider>();
+
+        if (humanWeapon == null)
+            return;
+
+        BoxCollider[] boxes = humanWeapon.GetComponentsInChildren<BoxCollider>();
+        SphereCollider[] spheres = humanWeapon.GetComponentsInChildren<SphereCollider>();
+        CapsuleCollider[] caspules = humanWeapon.GetComponentsInChildren<CapsuleCollider>();
+        MeshCollider[] meshes = humanWeapon.GetComponentsInChildren<MeshCollider>();
+
+        foreach (BoxCollider coll in boxes)
+            allWeaponColliders.Add(coll);
+
+        foreach (SphereCollider coll in spheres)
+            allWeaponColliders.Add(coll);
+
+        foreach (CapsuleCollider coll in caspules)
+            allWeaponColliders.Add(coll);
+
+        foreach (MeshCollider coll in meshes)
+            allWeaponColliders.Add(coll);
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
     [SerializeField] Transform rendererParent = default;
     [SerializeField] Animator humanAnimator = default;
-
+        
     public void LookTowardConstruction()
     {
         if (!canAct)
