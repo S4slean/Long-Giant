@@ -23,4 +23,14 @@ public class ShadowManager : MonoBehaviour
 
         shadowCamera.transform.position = new Vector3(main.transform.position.x, shadowPlane.transform.position.y + 10, main.transform.position.z);
     }
+
+    public void Enable()
+    {
+        
+    }
+
+    public void Disable()
+    {
+
+    }
 }
