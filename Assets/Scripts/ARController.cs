@@ -106,11 +106,6 @@ public class ARController : MonoBehaviour
     {
         _UpdateApplicationLifecycle();
 
-        if (m_isInitied) // The two points were set
-        {
-            return;
-        }
-
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
@@ -119,6 +114,12 @@ public class ARController : MonoBehaviour
 
         // Should not handle input if the player is pointing on UI.
         if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+        {
+            Debug.Log("Touched the UI");
+            return;
+        }
+
+        if (m_isInitied) // The two points were set
         {
             return;
         }
