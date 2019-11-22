@@ -102,10 +102,12 @@ public class HumanSpawningManager
         if (inGameSpanwers.Count > 0)
         {
             PhysicalObjectConstructionScript randomSpawner = inGameSpanwers[Random.Range(0, inGameSpanwers.Count)];
+            //Debug.Log("Spawn from random");
             return SpawnRandomHuman(randomSpawner.GetRandomSpawnPos());
         }
         else
         {
+            //Debug.Log("Spawn from outside");
             return SpawnHumanOutsideGameArea();
         }
     }

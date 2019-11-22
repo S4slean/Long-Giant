@@ -93,7 +93,7 @@ public class HumanScript : PhysicalObjectScript
             randomThrowVelocity.y = Mathf.Abs(randomThrowVelocity.y);
             randomThrowVelocity = Vector3.Slerp(randomThrowVelocity, Vector3.up, 0.5f);
 
-            humanWeapon.AddForce(randomThrowVelocity * Random.Range(250f, 300f));
+            humanWeapon.AddForce(randomThrowVelocity * Random.Range(8f, 10f));
             humanWeapon.AddTorque(Random.onUnitSphere * Random.Range(180f, 270f));
         }
 
