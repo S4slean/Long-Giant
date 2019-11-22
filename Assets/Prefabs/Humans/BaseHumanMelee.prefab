@@ -1078,8 +1078,8 @@ MonoBehaviour:
   attackType: 0
   timeBetweenTwoAttack: 3
   damageAmount: 1
-  minDistanceWithConstruction: 2.5
-  meleeAttackDistance: 3
+  minDistanceWithConstruction: 2.75
+  meleeAttackDistance: 3.25
   projectilePrefab: {fileID: 1223247065104284961, guid: 44ce0a680ff5bf544b5faeffa541c09a,
     type: 3}
   rangeAttackDistance: 8

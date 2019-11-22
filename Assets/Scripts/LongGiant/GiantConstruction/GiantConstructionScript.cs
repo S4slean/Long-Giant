@@ -147,6 +147,8 @@ public class GiantConstructionScript : MonoBehaviour
                         constructionAnimator.SetTrigger("addResource");
                         if (buildingSound != null)
                             buildingSound.Play();
+
+                        GameManager.gameManager.GetHumanSpawningManager.UpdateSpawnRate();
                     }
 
                     break;
@@ -203,6 +205,7 @@ public class GiantConstructionScript : MonoBehaviour
         currentNumberOfResources--;
         UpdateRenderer();
         constructionAnimator.SetTrigger("removeResource");
+        GameManager.gameManager.GetHumanSpawningManager.UpdateSpawnRate();
 
         informations[resourceTypeToEject].UpdateText(currentlyStoredResourcesDictionary[resourceTypeToEject], allNeededResourcesDictionnary[resourceTypeToEject]);
     }

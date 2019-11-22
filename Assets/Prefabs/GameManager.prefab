@@ -63,7 +63,8 @@ MonoBehaviour:
     - humanPrefab: {fileID: 8623977329504294226, guid: 2372594eb74c36342b49381aec87b888,
         type: 3}
       probability: 30
-    maximumNumberOfHumans: 10
+    maximumNumberOfHumans: 8
+    currentNumberOfHumans: 0
     maxSpawnRateNumberOfDestroyedConstruction: 30
     spawnRateDependingOnNumberOfDestroyedConstructions:
       serializedVersion: 2
@@ -89,8 +90,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    minimumSpawningRate: 0.15
-    maximumSpawningRate: 0.4
+    minimumSpawningRate: 0.1
+    maximumSpawningRate: 0.3
   worldGenerationManager:
     giantConstructionPrefab: {fileID: 611733609121576622, guid: e550095d2faca8f42aab8b52a2d32ac7,
       type: 3}

@@ -150,7 +150,7 @@ public class ARController : MonoBehaviour
 
                 Vector3 relativePos = m_playerCamera.transform.position - transform.position;
                 relativePos.y = transform.position.y;
-                Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up) * Quaternion.Euler(-90f, 0, 0);
+                Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up) * Quaternion.Euler(-90f, -90f, 0);
 
                 m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), rotation);
                 m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);

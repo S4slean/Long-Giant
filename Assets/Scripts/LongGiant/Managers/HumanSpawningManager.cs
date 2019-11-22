@@ -87,9 +87,15 @@ public class HumanSpawningManager
     {
         numberOfDestoyedConstructions++;
 
-        float newFrequenceCoeff = spawnRateDependingOnNumberOfDestroyedConstructions.Evaluate((float)numberOfDestoyedConstructions/maxSpawnRateNumberOfDestroyedConstruction);
-        spawningFrequenceSystem.ChangeFrequence(Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));
+        /*float newFrequenceCoeff = spawnRateDependingOnNumberOfDestroyedConstructions.Evaluate((float)numberOfDestoyedConstructions/maxSpawnRateNumberOfDestroyedConstruction);
+        spawningFrequenceSystem.ChangeFrequence(Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));*/
         //Debug.Log("current frequence : " + Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));
+    }
+
+    public void UpdateSpawnRate()
+    {
+        float newFrequenceCoeff = GameManager.gameManager.GetGiantConstruction.GetCompletionCoeff;
+        spawningFrequenceSystem.ChangeFrequence(Mathf.Lerp(minimumSpawningRate, maximumSpawningRate, newFrequenceCoeff));
     }
 
     public void SpawnHumanOnRandomSpawnerNoReturn()

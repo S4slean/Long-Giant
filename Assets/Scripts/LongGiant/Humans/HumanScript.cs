@@ -116,7 +116,6 @@ public class HumanScript : PhysicalObjectScript
         if (delayAfterSpawn > 0)
         {
             delayAfterSpawn -= Time.deltaTime;
-            Debug.Log(delayAfterSpawn);
 
             if (delayAfterSpawn < 0)
                 delayAfterSpawn = 0;
