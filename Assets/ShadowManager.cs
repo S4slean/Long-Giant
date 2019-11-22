@@ -22,7 +22,6 @@ public class ShadowManager : MonoBehaviour
     void Update()
     {
         //shadowPlane.transform.position = new Vector3(GameManager.gameManager.GetGiantConstruction.transform.position.x, shadowPlane.transform.position.y, shadowPlane.transform.position.z);
-
         //shadowCamera.transform.position = new Vector3(shadowPlane.transform.position.x, shadowPlane.transform.position.y + 10, shadowPlane.transform.position.z);
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SpatialTracking;
@@ -24,6 +25,7 @@ public class ARController : MonoBehaviour
     public GameObject m_worldBoundPrefab;
     public GameObject m_shadowPlane;
     public float m_minPlaygroundRadius = 7.5f;
+    public SnackbarManager m_snackbarManager;
     public LayerMask layerMask;
 
     private Camera m_playerCamera;
@@ -53,6 +55,14 @@ public class ARController : MonoBehaviour
         m_planeDiscovery = UnityEngine.Object.FindObjectOfType<PlaneDiscoveryGuide>().gameObject;
         m_planeGenerator = UnityEngine.Object.FindObjectOfType<DetectedPlaneGenerator>().gameObject;
         m_pointCloud = UnityEngine.Object.FindObjectOfType<PointcloudVisualizer>().gameObject;
+
+        StartCoroutine(DisplaySnackbar("Touch to place the center of the play area"));
+    }
+
+    private IEnumerator DisplaySnackbar(string text)
+    {
+        yield return new WaitForSeconds(1f);
+        m_snackbarManager.Open(text);
     }
 
     private void CreateWorldBounds(Vector3 rootPosition)
@@ -60,7 +70,7 @@ public class ARController : MonoBehaviour
         float worldSize = m_radius * 1.1f * 2.0f;
 
         GameObject go;
-        Vector3 size = new Vector3(worldSize * 2.0f, 10.0f, worldSize * 2.0f);
+        Vector3 size = new Vector3(worldSize * 2.0f, 20.0f, worldSize * 2.0f);
         Vector3 center = new Vector3(rootPosition.x, rootPosition.y + (size.y / 2.0f) - 0.1f, rootPosition.z);
 
         /// ====================== ///
@@ -141,6 +151,8 @@ public class ARController : MonoBehaviour
                 m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90f, 0, 0));
                 m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);
                 m_worldRootBeacon.transform.SetParent(m_anchorRoot.transform);
+
+                StartCoroutine(DisplaySnackbar("Touch to set the play area radius"));
             }
             else // Is second touch
             {
@@ -148,10 +160,12 @@ public class ARController : MonoBehaviour
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
                 if (m_radius < m_minPlaygroundRadius)
                 {
-                    _ShowAndroidToastMessage("Playground radius should be >= " + String.Format("{0:0.00}", m_minPlaygroundRadius / 10f) + " meters ; currently " + String.Format("{0:0.00}", m_radius / 10f) + " meters");
+                    _ShowAndroidToastMessage("Play area radius should be >= " + String.Format("{0:0.00}", m_minPlaygroundRadius / 10f) + " meters ; currently " + String.Format("{0:0.00}", m_radius / 10f) + " meters");
                     return;
                 }
                 m_isInitied = true;
+
+                m_snackbarManager.Close();
 
                 Debug.Log("Radius is: " + m_radius);
                 SetShadowPlanePosition(m_anchorRoot.transform.position);
