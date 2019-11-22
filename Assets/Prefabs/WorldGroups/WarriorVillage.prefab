@@ -383,11 +383,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 378345663568739345}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: ca1b2269910f23946904abe4eb42dbda,
-        type: 3}
-      propertyPath: m_Name
-      value: Grass (1)
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ca1b2269910f23946904abe4eb42dbda,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -458,6 +453,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 0.6648
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ca1b2269910f23946904abe4eb42dbda,
+        type: 3}
+      propertyPath: m_Name
+      value: Grass (1)
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca1b2269910f23946904abe4eb42dbda, type: 3}
 --- !u!4 &7748185339949680751 stripped
@@ -473,11 +473,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 378345663568739345}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: ca1b2269910f23946904abe4eb42dbda,
-        type: 3}
-      propertyPath: m_Name
-      value: Grass
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ca1b2269910f23946904abe4eb42dbda,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -547,6 +542,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 0.78805393
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: ca1b2269910f23946904abe4eb42dbda,
+        type: 3}
+      propertyPath: m_Name
+      value: Grass
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca1b2269910f23946904abe4eb42dbda, type: 3}

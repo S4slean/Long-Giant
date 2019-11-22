@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GiantConstructionScript : MonoBehaviour
 {
-    private void Update()
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -12,7 +12,7 @@ public class GiantConstructionScript : MonoBehaviour
             constructionFinished = true;
             constructionAnimator.SetBool("won", true);
         }
-    }
+    }*/
 
     bool constructionFinished = false;
 
@@ -102,7 +102,6 @@ public class GiantConstructionScript : MonoBehaviour
             counter++;
         }
 
-        Debug.Log("Total quantity : " + totalNumberOfNeededResources);
         UpdateRenderer();
     }
 
@@ -226,12 +225,10 @@ public class GiantConstructionScript : MonoBehaviour
         if (constructionFinished)
             return;
 
-        //Debug.Log("Receive damages : " + damagesAmount);
         remainingDamagesBeforeNextResourceLoss -= damagesAmount;
 
         while (remainingDamagesBeforeNextResourceLoss <= 0)
         {
-            //Debug.Log("Lose Resource");
             remainingDamagesBeforeNextResourceLoss += damagesStepToLoseOneResource;
             EjectRandomResource();
         }
@@ -244,7 +241,6 @@ public class GiantConstructionScript : MonoBehaviour
 
         foreach(ResourceType neededResourceType in allNeededResourcesDictionnary.Keys)
         {
-            //Debug.Log(neededResourceType + " : " + (currentlyStoredResourcesDictionary.ContainsKey(neededResourceType) ? currentlyStoredResourcesDictionary[neededResourceType] : 0) + "/" + allNeededResourcesDictionnary[neededResourceType]);
             if (currentlyStoredResourcesDictionary.ContainsKey(neededResourceType))
             {
                 if(currentlyStoredResourcesDictionary[neededResourceType] < allNeededResourcesDictionnary[neededResourceType])

@@ -71,9 +71,6 @@ public class PhysicalObjectScript : MonoBehaviour
         if (speedForce > minimumForceToBeDestroyed)
             pendingDestroy = true;
 
-        /*if(pendingDestroy)
-            Debug.Log(name + " destroyed by speed");*/
-
         return pendingDestroy;
     }
 

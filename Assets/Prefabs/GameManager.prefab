@@ -60,7 +60,7 @@ MonoBehaviour:
     - humanPrefab: {fileID: 8623977329504294226, guid: 498b53395925f9744b00b37f4366a619,
         type: 3}
       probability: 70
-    - humanPrefab: {fileID: 8623977329504294226, guid: 4fa9ccf993dbe7948b87c325d0184fce,
+    - humanPrefab: {fileID: 8623977329504294226, guid: 2372594eb74c36342b49381aec87b888,
         type: 3}
       probability: 30
     maximumNumberOfHumans: 10
@@ -89,8 +89,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    minimumSpawningRate: 0.2
-    maximumSpawningRate: 0.5
+    minimumSpawningRate: 0.15
+    maximumSpawningRate: 0.4
   worldGenerationManager:
     giantConstructionPrefab: {fileID: 611733609121576622, guid: e550095d2faca8f42aab8b52a2d32ac7,
       type: 3}

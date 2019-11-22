@@ -5,7 +5,8 @@ public class HumanScript : PhysicalObjectScript
 {
     private void OnEnable()
     {
-        GameManager.gameManager.OnGameWin += Flee;    }
+        GameManager.gameManager.OnGameWin += Flee;
+    }
 
     private void OnDisable()
     {
@@ -17,8 +18,6 @@ public class HumanScript : PhysicalObjectScript
         GameManager gameManager = GameManager.gameManager;
 
         base.SetUp();
-
-        //GetAllWeaponColliders();
 
         giantConstruction = gameManager.GetGiantConstruction;
         spawningManager = gameManager.GetHumanSpawningManager;
@@ -35,6 +34,12 @@ public class HumanScript : PhysicalObjectScript
 
         if (gameManager.gameFinished)
             Flee();
+
+        if(humanBubbleAnimator != null && !gameManager.gameFinished)
+        {
+            humanBubbleAnimator.SetInteger("angryCounter", Random.Range(0, 2));
+            humanBubbleAnimator.SetTrigger("spawned");
+        }
     }
 
     public override void DestroyPhysicalObject()
@@ -64,6 +69,13 @@ public class HumanScript : PhysicalObjectScript
     {
         canAct = false;
         objectBody.freezeRotation = false;
+
+        isWalking = false;
+        if (humanAnimator != null)
+            humanAnimator.SetBool("walking", isWalking);
+
+        if (humanBubbleAnimator != null)
+            humanBubbleAnimator.SetTrigger("grabbed");
     }
 
     public void Flee()
@@ -71,8 +83,6 @@ public class HumanScript : PhysicalObjectScript
         fleeing = true;
         if (humanWeapon != null)
         {
-            //humanWeapon.transform.position += Vector3.up * 0.3f;
-
             humanWeapon.isKinematic = false;
             humanWeapon.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
 
@@ -86,6 +96,9 @@ public class HumanScript : PhysicalObjectScript
             humanWeapon.AddForce(randomThrowVelocity * Random.Range(250f, 300f));
             humanWeapon.AddTorque(Random.onUnitSphere * Random.Range(180f, 270f));
         }
+
+        if (humanBubbleAnimator != null)
+            humanBubbleAnimator.SetTrigger("fleeing");
     }
 
     public void UpdateMove()
@@ -95,8 +108,6 @@ public class HumanScript : PhysicalObjectScript
         Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : 1);
         move.y = objectBody.velocity.y;
         objectBody.velocity = move;
-
-        Debug.DrawRay(transform.position, moveDirection, Color.red);
     }
 
     public bool NeedToMoveTowardTarget
@@ -147,6 +158,9 @@ public class HumanScript : PhysicalObjectScript
             humanAnimator.SetTrigger("attack");
         else
             LaunchTrueAttack();
+
+        if (humanBubbleAnimator != null)
+            humanBubbleAnimator.SetTrigger("attack");
     }
 
     public void LaunchTrueAttack()
@@ -206,6 +220,7 @@ public class HumanScript : PhysicalObjectScript
     }
     [SerializeField] Transform rendererParent = default;
     [SerializeField] Animator humanAnimator = default;
+    [SerializeField] Animator humanBubbleAnimator = default;
         
     public void LookTowardConstruction()
     {

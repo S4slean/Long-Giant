@@ -975,7 +975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objSize: 1
-  radius: 25
+  radius: 7.5
   spacing: 1
   minDist: 5
   maxNumber: 50
