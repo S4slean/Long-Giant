@@ -8,18 +8,30 @@ public class GiantConstructionScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            GameManager.gameManager.OnGameWin?.Invoke();
-            constructionFinished = true;
-            constructionAnimator.SetBool("won", true);
+            FinishConstruction();
         }
     }
 
     bool constructionFinished = false;
 
+    public void FinishConstruction()
+    {
+        GameManager.gameManager.OnGameWin?.Invoke();
+        constructionFinished = true;
+        constructionAnimator.SetBool("won", true);
+        fireworksParent.SetActive(true);
+
+        if (winSound != null)
+            winSound.Play();
+    }
+
     [Header("References")]
     [SerializeField] MeshRenderer constructionRenderer = default;
     [SerializeField] MeshRenderer constructionGhostRenderer = default;
     [SerializeField] Animator constructionAnimator = default;
+    [SerializeField] GameObject fireworksParent = default;
+    [SerializeField] AudioSource buildingSound = default;
+    [SerializeField] AudioSource winSound = default;
 
     public void UpdateRenderer()
     {
@@ -133,6 +145,8 @@ public class GiantConstructionScript : MonoBehaviour
                         currentNumberOfResources++;
                         UpdateRenderer();
                         constructionAnimator.SetTrigger("addResource");
+                        if (buildingSound != null)
+                            buildingSound.Play();
                     }
 
                     break;
@@ -146,9 +160,7 @@ public class GiantConstructionScript : MonoBehaviour
         {
             if (CheckIfConstructionFinished())
             {
-                GameManager.gameManager.OnGameWin?.Invoke();
-                constructionFinished = true;
-                constructionAnimator.SetBool("won", true);
+                FinishConstruction();
             }
         }
     }

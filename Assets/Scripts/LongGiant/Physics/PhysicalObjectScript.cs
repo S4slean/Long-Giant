@@ -23,6 +23,7 @@ public class PhysicalObjectScript : MonoBehaviour
     [Header("Miscelaneous")]
     [SerializeField] float minimumRotationSpeedOnThrow = 180;
     [SerializeField] float maximumRotationSpeedOnThrow = 270;
+    [SerializeField] PlayRandomSound randomSound = default;
 
     private ParticleSystem poofPS;
 
@@ -87,6 +88,9 @@ public class PhysicalObjectScript : MonoBehaviour
             poofPS.transform.parent = null;
             poofPS.Play();
         }
+
+        if (randomSound != null)
+            randomSound.PlaySound();
 
         Destroy(gameObject);
     }

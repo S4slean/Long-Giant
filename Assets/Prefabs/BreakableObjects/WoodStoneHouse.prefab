@@ -83,6 +83,7 @@ MonoBehaviour:
   objectBodyMass: 2
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
+  randomSound: {fileID: 3884603999792469417}
   allResourcesSpawnedOnDestroy:
   - resourceType: 0
     quantity: 2
@@ -186,6 +187,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 185443524445985151}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3884603999792469417 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3997561661556706518, guid: 44c2314a389d95a44b7a412e59604608,
+    type: 3}
+  m_PrefabInstance: {fileID: 185443524445985151}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f1f139dea310bb459881802fbf97071, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1702380773850545523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -193,11 +206,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 401679223239714760}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: a1f40066be2e7c74bb55097aaec1053f,
-        type: 3}
-      propertyPath: m_Name
-      value: WoodStoneHouse
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a1f40066be2e7c74bb55097aaec1053f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -252,6 +260,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: a1f40066be2e7c74bb55097aaec1053f,
+        type: 3}
+      propertyPath: m_Name
+      value: WoodStoneHouse
       objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: a1f40066be2e7c74bb55097aaec1053f,
         type: 3}
