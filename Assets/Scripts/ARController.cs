@@ -226,6 +226,8 @@ public class ARController : MonoBehaviour
         m_planeDiscovery.SetActive(false);
         m_planeGenerator.SetActive(false);
         m_pointCloud.SetActive(false);
+
+        ShadowManager.Instance.Enable();
     }
 
     private void OnTrackingLost()
@@ -234,6 +236,8 @@ public class ARController : MonoBehaviour
         m_planeDiscovery.SetActive(true);
         m_planeGenerator.SetActive(true);
         m_pointCloud.SetActive(true);
+
+        ShadowManager.Instance.Disable();
     }
 
     private void _DoQuit()
