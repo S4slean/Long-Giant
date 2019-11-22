@@ -4,7 +4,28 @@ using UnityEngine;
 
 public class GiantConstructionScript : MonoBehaviour
 {
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            GameManager.gameManager.OnGameWin?.Invoke();
+            constructionFinished = true;
+            constructionAnimator.SetBool("won", true);
+        }
+    }
+
     bool constructionFinished = false;
+
+    [Header("References")]
+    [SerializeField] MeshRenderer constructionRenderer = default;
+    [SerializeField] MeshRenderer constructionGhostRenderer = default;
+    [SerializeField] Animator constructionAnimator = default;
+
+    public void UpdateRenderer()
+    {
+        constructionRenderer.material.SetFloat("_Fill", GetCompletionCoeff);
+        constructionGhostRenderer.material.SetFloat("_Fill", GetCompletionCoeff);
+    }
 
     /*[SerializeField] List<GiantConstructionStorey> allConstructionStoreys = new List<GiantConstructionStorey>();
     int currentStoryCounter = 0;
@@ -18,6 +39,9 @@ public class GiantConstructionScript : MonoBehaviour
     [Header("Construction Parameters")]
     Dictionary<ResourceType, int> allNeededResourcesDictionnary = new Dictionary<ResourceType, int>();
     Dictionary<ResourceType, int> currentlyStoredResourcesDictionary = new Dictionary<ResourceType, int>();
+    int totalNumberOfNeededResources = 0;
+    int currentNumberOfResources = 0;
+    public float GetCompletionCoeff { get { return totalNumberOfNeededResources > 0 ?(float)currentNumberOfResources / totalNumberOfNeededResources : 0; } }
 
    [Header("Damages Reception")]
     [SerializeField] int damagesStepToLoseOneResource = 10;
@@ -58,10 +82,13 @@ public class GiantConstructionScript : MonoBehaviour
         allNeededResourcesDictionnary = allNeededResources;
         foreach (ResourceType resourceType in allNeededResourcesDictionnary.Keys)
         {
+            int resourceQuantity = allNeededResources[resourceType];
+            totalNumberOfNeededResources += resourceQuantity;
+
             currentlyStoredResourcesDictionary.Add(resourceType, 0);
             ResourceSingleInformationsUI newInfoUI = Instantiate(singleInformationsUIPrefab, singleInformationsUIParent);
             newInfoUI.SetUp(GameManager.gameManager.GetResourceDisplayInformations(resourceType));
-            newInfoUI.UpdateText(0, allNeededResources[resourceType]);
+            newInfoUI.UpdateText(0, resourceQuantity);
 
             informations.Add(resourceType, newInfoUI);
         }
@@ -74,6 +101,9 @@ public class GiantConstructionScript : MonoBehaviour
 
             counter++;
         }
+
+        Debug.Log("Total quantity : " + totalNumberOfNeededResources);
+        UpdateRenderer();
     }
 
     #region Resources Management
@@ -101,6 +131,9 @@ public class GiantConstructionScript : MonoBehaviour
                         currentlyStoredResourcesDictionary[resourceType]++;
                         informations[resourceType].UpdateText(currentlyStoredResourcesDictionary[resourceType], maxValue);
                         placedInExistantElement = true;
+                        currentNumberOfResources++;
+                        UpdateRenderer();
+                        constructionAnimator.SetTrigger("addResource");
                     }
 
                     break;
@@ -114,14 +147,18 @@ public class GiantConstructionScript : MonoBehaviour
         {
             if (CheckIfConstructionFinished())
             {
-                Debug.Log("Construction finished !");
+                GameManager.gameManager.OnGameWin?.Invoke();
                 constructionFinished = true;
+                constructionAnimator.SetBool("won", true);
             }
         }
     }
 
     public void EjectRandomResource()
     {
+        if (constructionFinished)
+            return;
+
         List<ResourceType> availableResourcesTypes = new List<ResourceType>();
 
         foreach(ResourceType storedResourceType in currentlyStoredResourcesDictionary.Keys)
@@ -145,12 +182,16 @@ public class GiantConstructionScript : MonoBehaviour
         randomThrowVelocity = Vector3.Slerp(randomThrowVelocity, Vector3.up, 0.5f);
 
         PhysicalObjectResourceScript newResourceObject = Instantiate(prefab, ejectionPosition.position + randomThrowVelocity * ejectionDistanceFromCenter, Quaternion.identity);
+        newResourceObject.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
         newResourceObject.SetUp();
 
         newResourceObject.SetCantBePlacedOnGiantConstruction(false);
         newResourceObject.Throw(randomThrowVelocity * Random.Range(minimumEjectionForce, maximumEjectionForce));
 
         currentlyStoredResourcesDictionary[resourceTypeToEject]--;
+        currentNumberOfResources--;
+        UpdateRenderer();
+        constructionAnimator.SetTrigger("removeResource");
 
         informations[resourceTypeToEject].UpdateText(currentlyStoredResourcesDictionary[resourceTypeToEject], allNeededResourcesDictionnary[resourceTypeToEject]);
     }
@@ -168,10 +209,13 @@ public class GiantConstructionScript : MonoBehaviour
             randomThrowVelocity = Vector3.Slerp(randomThrowVelocity, Vector3.up, 0.5f);
 
             PhysicalObjectResourceScript newResourceObject = Instantiate(prefab, ejectionPosition.position + randomThrowVelocity * ejectionDistanceFromCenter, Quaternion.identity);
+            newResourceObject.transform.parent = GameManager.gameManager.GetAllGameObjectsParent;
             newResourceObject.SetUp();
 
             newResourceObject.SetCantBePlacedOnGiantConstruction(false);
             newResourceObject.Throw(randomThrowVelocity * Random.Range(minimumEjectionForce, maximumEjectionForce));
+            
+            constructionAnimator.SetTrigger("removeResource");
         }
     }
     #endregion
@@ -179,12 +223,15 @@ public class GiantConstructionScript : MonoBehaviour
     #region Damages Management
     public void ReceiveDamages(int damagesAmount)
     {
+        if (constructionFinished)
+            return;
+
         //Debug.Log("Receive damages : " + damagesAmount);
         remainingDamagesBeforeNextResourceLoss -= damagesAmount;
 
         while (remainingDamagesBeforeNextResourceLoss <= 0)
         {
-            Debug.Log("Lose Resource");
+            //Debug.Log("Lose Resource");
             remainingDamagesBeforeNextResourceLoss += damagesStepToLoseOneResource;
             EjectRandomResource();
         }
@@ -197,7 +244,7 @@ public class GiantConstructionScript : MonoBehaviour
 
         foreach(ResourceType neededResourceType in allNeededResourcesDictionnary.Keys)
         {
-            Debug.Log(neededResourceType + " : " + (currentlyStoredResourcesDictionary.ContainsKey(neededResourceType) ? currentlyStoredResourcesDictionary[neededResourceType] : 0) + "/" + allNeededResourcesDictionnary[neededResourceType]);
+            //Debug.Log(neededResourceType + " : " + (currentlyStoredResourcesDictionary.ContainsKey(neededResourceType) ? currentlyStoredResourcesDictionary[neededResourceType] : 0) + "/" + allNeededResourcesDictionnary[neededResourceType]);
             if (currentlyStoredResourcesDictionary.ContainsKey(neededResourceType))
             {
                 if(currentlyStoredResourcesDictionary[neededResourceType] < allNeededResourcesDictionnary[neededResourceType])

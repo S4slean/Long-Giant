@@ -49,7 +49,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 18cc174794f44fd4fa973c0bd72397cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -175,17 +175,18 @@ MonoBehaviour:
   objectBody: {fileID: 8623977329504294227}
   physicalObjectInteractionsType: 3
   minimumForceToBeDestroyed: 5
-  objectDamagingMass: 0.1
-  objectBodyMass: 0.1
+  objectDamagingMass: 0.3
+  objectBodyMass: 0.3
   minimumRotationSpeedOnThrow: 180
   maximumRotationSpeedOnThrow: 270
   moveSpeed: 100
   attackType: 1
   timeBetweenTwoAttack: 2
   damageAmount: 2
+  meleeAttackDistance: 3.5
   projectilePrefab: {fileID: 1223247065104284961, guid: 44ce0a680ff5bf544b5faeffa541c09a,
     type: 3}
-  rangeAttackDistance: 4
+  rangeAttackDistance: 5
   rangeShootingOffset: 0.1
   rangeShootingForce: 8
   rendererParent: {fileID: 8623977328344793520}

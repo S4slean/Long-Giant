@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SpatialTracking;
 using GoogleARCore;
 using GoogleARCore.Examples.Common;
 
@@ -11,24 +10,33 @@ using GoogleARCore.Examples.Common;
     using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
+struct TrackingState
+{
+    public bool previous;
+    public bool current;
+}
+
+
 public class ARController : MonoBehaviour
 {
-    public Action<Vector3, float> OnPlaygroundCreated;
-
-    public Camera playerCamera;
-
-    private bool m_IsQuitting = false;
-
-    public GameObject m_arCoreDevice;
     public GameObject m_worldOriginPrefab;
-    public GameObject m_shadowPlane;
     public GameObject m_worldGroundPrefab;
     public GameObject m_worldBoundPrefab;
+    public GameObject m_shadowPlane;
+    public float m_minPlaygroundRadius = 7.5f;
+    public LayerMask layerMask;
 
+    private Camera m_playerCamera;
+    private GameObject m_arCoreDevice;
     private Anchor m_anchorRoot;
     private GameObject m_worldRootBeacon;
     private float m_radius = 0.0f;
     private bool m_isInitied = false;
+    private bool m_IsQuitting = false;
+    private GameObject m_planeDiscovery;
+    private GameObject m_planeGenerator;
+    private GameObject m_pointCloud;
+    private TrackingState m_trackingState;
 
     public void Awake()
     {
@@ -39,59 +47,69 @@ public class ARController : MonoBehaviour
         {
             m_shadowPlane.SetActive(false);
         }
+
+        m_playerCamera = UnityEngine.Object.FindObjectOfType<TrackedPoseDriver>().GetComponent<Camera>();
+        m_arCoreDevice = UnityEngine.Object.FindObjectOfType<ARCoreSession>().gameObject;
+        m_planeDiscovery = UnityEngine.Object.FindObjectOfType<PlaneDiscoveryGuide>().gameObject;
+        m_planeGenerator = UnityEngine.Object.FindObjectOfType<DetectedPlaneGenerator>().gameObject;
+        m_pointCloud = UnityEngine.Object.FindObjectOfType<PointcloudVisualizer>().gameObject;
     }
 
-    private void SetShadowPlanePosition(Vector3 position)
+    private void CreateWorldBounds(Vector3 rootPosition)
     {
-        Debug.Log("Radius is: " + m_radius);
-        if (m_shadowPlane != null)
-        {
-            m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
-            m_shadowPlane.transform.position = position;
-            m_shadowPlane.SetActive(true);
-        }
-
         float worldSize = m_radius * 1.1f * 2.0f;
-        GameObject terrainPlane = Instantiate(m_worldGroundPrefab, position, Quaternion.identity, m_anchorRoot.transform);
-        terrainPlane.transform.localScale = new Vector3(worldSize, 0.04f, worldSize);
-        terrainPlane.name = "WorldGround";
 
         GameObject go;
         Vector3 size = new Vector3(worldSize * 2.0f, 10.0f, worldSize * 2.0f);
-        Vector3 center = new Vector3(position.x, position.y + (size.y / 2.0f) - 0.1f, position.z);
+        Vector3 center = new Vector3(rootPosition.x, rootPosition.y + (size.y / 2.0f) - 0.1f, rootPosition.z);
 
         /// ====================== ///
         go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, -size.y / 2.0f, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, 0.2f, size.z);
         go.layer = 0;
-        go.name = "Bound DOWN";
+        go.name = "World Bound DOWN";
 
         go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, size.y / 2.0f, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, 0.2f, size.z);
-        go.name = "Bound UP";
+        go.name = "World Bound UP";
 
         /// ====================== ///
         go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, -size.z / 2.0f), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, size.y, 0.2f);
-        go.name = "Bound LEFT";
+        go.name = "World Bound LEFT";
 
         go = Instantiate(m_worldBoundPrefab, center + new Vector3(0, 0, size.x / 2.0f), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(size.x, size.y, 0.2f);
-        go.name = "Bound RIGHT";
+        go.name = "World Bound RIGHT";
 
         /// ====================== ///
         go = Instantiate(m_worldBoundPrefab, center + new Vector3(-size.x / 2.0f, 0, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(0.2f, size.y, size.z);
-        go.name = "Bound FOREWARD";
+        go.name = "World Bound FOREWARD";
 
         go = Instantiate(m_worldBoundPrefab, center + new Vector3(size.x / 2.0f, 0, 0), Quaternion.identity, m_anchorRoot.transform);
         go.transform.localScale = new Vector3(0.2f, size.y, size.z);
-        go.name = "Bound BACKWARD";
+        go.name = "World Bound BACKWARD";
+    }
+
+    private void SetShadowPlanePosition(Vector3 rootPosition)
+    {
+        if (m_shadowPlane != null)
+        {
+            m_shadowPlane.transform.SetParent(m_anchorRoot.transform);
+            m_shadowPlane.transform.position = rootPosition;
+            m_shadowPlane.SetActive(true);
+        }
     }
 
     public void Update()
     {
         _UpdateApplicationLifecycle();
+
+        if (m_isInitied) // The two points were set
+        {
+            return;
+        }
 
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
@@ -106,16 +124,10 @@ public class ARController : MonoBehaviour
         }
 
         RaycastHit hit;
-        Ray ray = playerCamera.ScreenPointToRay(touch.position);
+        Ray ray = m_playerCamera.ScreenPointToRay(touch.position);
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
         {
-            if (m_isInitied) // The two points were set
-            {
-                SonarRings();
-                return;
-            }
-
             Pose pose = new Pose(hit.point, Quaternion.identity);
 
             if (m_anchorRoot == null) // Is first touch
@@ -123,8 +135,9 @@ public class ARController : MonoBehaviour
                 m_anchorRoot = Session.CreateAnchor(pose);
                 m_anchorRoot.gameObject.name = "Root Anchor";
                 m_anchorRoot.transform.SetParent(m_arCoreDevice.transform);
+                GameManager.gameManager.SetAllGameObjectsParent(m_anchorRoot.transform);
 
-                m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90.0f, 0, 0));
+                m_worldRootBeacon = Instantiate(m_worldOriginPrefab, new Vector3(pose.position.x, pose.position.y, pose.position.z), Quaternion.Euler(-90f, 0, 0));
                 m_worldRootBeacon.transform.localScale = new Vector3(1f, 1f, 1f);
                 m_worldRootBeacon.transform.SetParent(m_anchorRoot.transform);
             }
@@ -132,56 +145,24 @@ public class ARController : MonoBehaviour
             {
                 var tmpPos = new Vector3(pose.position.x, m_anchorRoot.transform.position.y, pose.position.z);
                 m_radius = Vector3.Distance(m_anchorRoot.transform.position, tmpPos);
-                /*if (m_radius < 1f)
+                if (m_radius < m_minPlaygroundRadius)
                 {
-                    _ShowAndroidToastMessage("Playground radius should be > 1= meter ; currently " + m_radius + " meters");
+                    _ShowAndroidToastMessage("Playground radius should be >= " + String.Format("{0:0.00}", m_minPlaygroundRadius / 10f) + " meters ; currently " + String.Format("{0:0.00}", m_radius / 10f) + " meters");
                     return;
-                }*/
-                m_isInitied = true;
-                SetShadowPlanePosition(m_anchorRoot.transform.position);
-
-                SonarRings();
-                StartCoroutine(RemoveWorldRootBeacon());
-
-                if (OnPlaygroundCreated != null)
-                {
-                    OnPlaygroundCreated(m_anchorRoot.transform.position, m_radius);
                 }
+                m_isInitied = true;
+
+                Debug.Log("Radius is: " + m_radius);
+                SetShadowPlanePosition(m_anchorRoot.transform.position);
+                CreateWorldBounds(m_anchorRoot.transform.position);
+
+                Destroy(m_worldRootBeacon);
+
+                GameManager.gameManager.GetWorldGenerationManager.GenerateWorld(m_anchorRoot.transform.position, m_radius);
+
+                OnTrackingRecovered();
             }
         }
-    }
-
-    void SonarRings()
-    {
-        foreach (var item in UnityEngine.Object.FindObjectsOfType<SimpleSonarShader_Object>())
-        {
-            StartCoroutine(SonarRing(item));
-        }
-    }
-
-    IEnumerator SonarRing(SimpleSonarShader_Object item)
-    {
-        for (int i = 0; i < 12; i++)
-        {
-            item.StartSonarRing(m_anchorRoot.transform.position, 4.0f);
-            yield return new WaitForSeconds(i * i * 1.7f);
-            //yield return new WaitForSeconds(0.1f);
-        }
-    }
-
-    IEnumerator RemoveWorldRootBeacon()
-    {
-        while (m_worldRootBeacon.transform.localScale.magnitude > 0.1f)
-        {
-            m_worldRootBeacon.transform.localScale *= 0.85f;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Destroy(m_worldRootBeacon);
-    }
-
-    public Anchor getRootAnchor()
-    {
-        return m_anchorRoot;
     }
 
     // Create a post at a position
@@ -194,10 +175,28 @@ public class ARController : MonoBehaviour
         if (Session.Status != SessionStatus.Tracking)
         {
             Screen.sleepTimeout = SleepTimeout.SystemSetting;
+            if (m_isInitied)
+            {
+                m_trackingState.previous = m_trackingState.current;
+                m_trackingState.current = false;
+                if (m_trackingState.current != m_trackingState.previous)
+                {
+                    OnTrackingLost();
+                }
+            }
         }
         else
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            if (m_isInitied)
+            {
+                m_trackingState.previous = m_trackingState.current;
+                m_trackingState.current = true;
+                if (m_trackingState.current != m_trackingState.previous)
+                {
+                    OnTrackingRecovered();
+                }
+            }
         }
 
         if (m_IsQuitting)
@@ -215,11 +214,26 @@ public class ARController : MonoBehaviour
         }
         else if (Session.Status.IsError())
         {
-            _ShowAndroidToastMessage(
-                "ARCore encountered a problem connecting.  Please start the app again.");
+            _ShowAndroidToastMessage("ARCore encountered a problem connecting.  Please start the app again.");
             m_IsQuitting = true;
             Invoke("_DoQuit", 0.5f);
         }
+    }
+
+    private void OnTrackingRecovered()
+    {
+        Debug.Log("OnTrackingRecovered() Desactivate planes");
+        m_planeDiscovery.SetActive(false);
+        m_planeGenerator.SetActive(false);
+        m_pointCloud.SetActive(false);
+    }
+
+    private void OnTrackingLost()
+    {
+        Debug.Log("OnTrackingLost() Activate planes");
+        m_planeDiscovery.SetActive(true);
+        m_planeGenerator.SetActive(true);
+        m_pointCloud.SetActive(true);
     }
 
     private void _DoQuit()

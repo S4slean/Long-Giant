@@ -92,7 +92,7 @@ MonoBehaviour:
   resourcesSpawnDistanceFromObject: 0.5
   isSpawner: 1
   spawningOffset: 1
-  numberOfHumanSpawnedOnDestroy: 2
+  numberOfHumanSpawnedOnDestroy: 1
 --- !u!1001 &1673797954585624672
 PrefabInstance:
   m_ObjectHideFlags: 0

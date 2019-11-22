@@ -55,6 +55,7 @@ public class HandController : MonoBehaviour
                 state = State.Smash;
                 SetJointActive(false);
                 OpenHand(true);
+                handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
             }
         }
 
@@ -85,8 +86,10 @@ public class HandController : MonoBehaviour
             Camera cam = Camera.main;
             Ray ray = cam.ScreenPointToRay(touch.position);
 
-            if (Physics.Raycast(ray, out hit, layerMask.value))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
             {
+                Debug.Log(hit.collider.name);
+
                 Vector3 position = hit.point;
 
                 handPlacer.joint.transform.position = position;
@@ -102,6 +105,7 @@ public class HandController : MonoBehaviour
 
         if (state == State.Grabbing)
         {
+            RaycastHit hit;
             Camera cam = Camera.main;
             Ray ray = cam.ScreenPointToRay(touch.position);
 
@@ -110,14 +114,25 @@ public class HandController : MonoBehaviour
 
             StartCoroutine(CollisionsCoroutine(grabbedObj.GetComponent<Collider>()));
 
-            grabbedObj.Throw(ray.direction, throwForce);
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
+            {
+                grabbedObj.Throw((hit.point - grabbedObj.transform.position).normalized, throwForce);
+
+                handBody.AddForce((hit.point - grabbedObj.transform.position).normalized * 500, ForceMode.Impulse);
+            }
+            else
+            {
+                grabbedObj.Throw(ray.direction, throwForce);
+
+                handBody.AddForce(ray.direction * 500, ForceMode.Impulse);
+            }
+
             grabbedObj = null;
 
             handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
 
             OpenHand(true);
 
-            handBody.AddForce(ray.direction * 500, ForceMode.Impulse);
 
             return;
         }
@@ -125,11 +140,6 @@ public class HandController : MonoBehaviour
 
     IEnumerator CollisionsCoroutine(Collider c1)
     {
-        foreach (var item in handBody.GetComponentsInChildren<Collider>())
-        {
-            Physics.IgnoreCollision(c1, item, true);
-        }
-
         yield return new WaitForSeconds(2);
 
         if (c1 == null) yield break;
@@ -138,6 +148,15 @@ public class HandController : MonoBehaviour
         {
             Physics.IgnoreCollision(c1, item, false);
         }
+    }
+
+    IEnumerator InteractionCoroutine(PhysicalObjectScript physObj)
+    {
+        yield return new WaitForSeconds(1);
+
+        if (physObj == null) yield break;
+
+        physObj.physicalObjectInteractionsType = PhysicalObjectInteractionsType.DealAndReceiveDamages;
     }
 
     private void LateUpdate()
@@ -169,11 +188,25 @@ public class HandController : MonoBehaviour
 
                 state = State.Grabbing;
 
+
+                foreach (var item in handBody.GetComponentsInChildren<Collider>())
+                {
+                    Physics.IgnoreCollision(objRB.GetComponent<Collider>(), item, true);
+                }
+
+                physObj.physicalObjectInteractionsType = PhysicalObjectInteractionsType.None;
+
+                StartCoroutine(InteractionCoroutine(physObj));
+
                 OpenHand(false);
+
+                if (physObj is HumanScript)
+                    (physObj as HumanScript).StopAct();
             }
             else
             {
                 state = State.Smash;
+                handPhysicalObject.physicalObjectInteractionsType = PhysicalObjectInteractionsType.OnlyDealDamages;
             }
 
             handPlacer.placeJoint = true;
