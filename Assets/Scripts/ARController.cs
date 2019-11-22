@@ -106,11 +106,6 @@ public class ARController : MonoBehaviour
     {
         _UpdateApplicationLifecycle();
 
-        if (m_isInitied) // The two points were set
-        {
-            return;
-        }
-
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
@@ -119,6 +114,12 @@ public class ARController : MonoBehaviour
 
         // Should not handle input if the player is pointing on UI.
         if (EventSystem.current.IsPointerOverGameObject(touch.fingerId))
+        {
+            Debug.Log("Touched the UI");
+            return;
+        }
+
+        if (m_isInitied) // The two points were set
         {
             return;
         }
@@ -226,6 +227,8 @@ public class ARController : MonoBehaviour
         m_planeDiscovery.SetActive(false);
         m_planeGenerator.SetActive(false);
         m_pointCloud.SetActive(false);
+
+        ShadowManager.Instance.Enable();
     }
 
     private void OnTrackingLost()
@@ -234,6 +237,8 @@ public class ARController : MonoBehaviour
         m_planeDiscovery.SetActive(true);
         m_planeGenerator.SetActive(true);
         m_pointCloud.SetActive(true);
+
+        ShadowManager.Instance.Disable();
     }
 
     private void _DoQuit()
