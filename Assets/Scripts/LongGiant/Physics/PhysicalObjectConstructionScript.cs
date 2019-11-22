@@ -26,6 +26,9 @@ public class PhysicalObjectConstructionScript : PhysicalObjectScript
     [SerializeField] float spawningOffset = 1;
     public Vector3 GetRandomSpawnPos()
     {
+        if (this == null)
+            return Vector3.zero;
+
         Vector3 spawnPos = transform.position;
 
         Vector3 spawnPosOffset = Random.onUnitSphere;
