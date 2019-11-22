@@ -975,7 +975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objSize: 1
-  radius: 7.5
+  radius: 25
   spacing: 1
   minDist: 5
   maxNumber: 50
@@ -1518,5 +1518,15 @@ PrefabInstance:
       propertyPath: allGameObjectsParent
       value: 
       objectReference: {fileID: 537690559}
+    - target: {fileID: 8479539716862071931, guid: 2f22b45c40eadb444bd2918575c6d67a,
+        type: 3}
+      propertyPath: worldGenerationManager.allPrefabs.Array.data[1].probability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8479539716862071931, guid: 2f22b45c40eadb444bd2918575c6d67a,
+        type: 3}
+      propertyPath: worldGenerationManager.allPrefabs.Array.data[0].probability
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f22b45c40eadb444bd2918575c6d67a, type: 3}

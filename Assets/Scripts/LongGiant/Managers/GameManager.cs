@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] Transform allGameObjectsParent = default;
     public Transform GetAllGameObjectsParent { get { return allGameObjectsParent; } }
+    public float gameAreaRadius = 7.5f;
+
     public void SetAllGameObjectsParent(Transform newParent)
     {
         allGameObjectsParent = newParent;
@@ -88,12 +90,6 @@ public class GameManager : MonoBehaviour
     
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            if (giantConstruction != null)
-                giantConstruction.ReceiveDamages(10);
-        }
-
         if (!gameFinished)
             humanSpawningManager.UpdateSpawningSystem();
     }

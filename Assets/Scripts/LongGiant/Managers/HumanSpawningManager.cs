@@ -112,7 +112,11 @@ public class HumanSpawningManager
 
     public HumanScript SpawnHumanOutsideGameArea()
     {
-        return SpawnRandomHuman(Vector3.zero);
+        Vector3 randomDirection = Random.onUnitSphere;
+        randomDirection.y = 0;
+        randomDirection.Normalize();
+
+        return SpawnRandomHuman(GameManager.gameManager.GetGiantConstruction.transform.position + randomDirection * GameManager.gameManager.gameAreaRadius + Vector3.up);
     }
 
     public HumanScript SpawnRandomHuman(Vector3 spawnPos)

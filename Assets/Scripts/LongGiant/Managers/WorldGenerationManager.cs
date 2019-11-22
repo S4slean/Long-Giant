@@ -8,6 +8,7 @@ public class WorldGenerationManager
     [Header("Prefabs")]
     [SerializeField] GiantConstructionScript giantConstructionPrefab = default;
     [SerializeField] List<WorldElementPrefabWithProbability> allPrefabs = new List<WorldElementPrefabWithProbability>();
+    [SerializeField] List<WorldElementPrefabWithProbability> fillingPrefabs = new List<WorldElementPrefabWithProbability>();
     [SerializeField] float worldElementsSize = 1.2f;
     [SerializeField] float worldElementsSpacing = 0.5f;
     [SerializeField] float randomPositionAmplitude = 0.25f;
@@ -23,6 +24,7 @@ public class WorldGenerationManager
     public void GenerateWorld(Vector3 centerPosition, float radius)
     {
         totalProbability = GetTotalProbability();
+        totalFillProbability = GetTotalFillObjectsProbability();
 
         allResourcesWeights = new Dictionary<ResourceType, float>();
         foreach (ResourceWithWeight resource in resourcesWithWeight)
@@ -39,15 +41,22 @@ public class WorldGenerationManager
         List<Vector3> allPossiblePositions = CirclePositionsGenerator.GetAllPositionsInCircle(worldElementsSize, worldElementsSpacing, radius, minimumDistanceWithCenter, (int)((float)maximumNumberOfWorldElements / worldFillingAmount));
         int numberOfElementsInWorld = Mathf.Clamp(Mathf.RoundToInt(allPossiblePositions.Count * worldFillingAmount), 0, maximumNumberOfWorldElements);
 
-        //Debug.Log("Total Number of Elements : " + numberOfElementsInWorld);
+        if (allPossiblePositions.Count == 0)
+            return;
 
         WorldElementPrefab pickedPrefab = null;
         WorldElementPrefab newObject = null;
         int pickedRandomInt = 0;
         Vector3 randomOffset = Vector3.zero;
+
+        GameManager.gameManager.gameAreaRadius = Vector3.Distance(centerPosition, allPossiblePositions[allPossiblePositions.Count - 1]) + worldElementsSize;
+
         for (int i = 0; i < numberOfElementsInWorld; i++)
         {
             pickedPrefab = GetRandomElementPrefab();
+
+            if (pickedPrefab == null)
+                continue;
 
             randomOffset = Random.onUnitSphere;
             randomOffset.y = 0;
@@ -62,6 +71,20 @@ public class WorldGenerationManager
 
             foreach (PhysicalObjectConstructionScript construction in newObject.GetAllElements)
                 AddResourcesToTotal(construction);
+        }
+
+        foreach (Vector3 fillingPos in allPossiblePositions)
+        {
+            pickedPrefab = GetRandomFillElementPrefab();
+
+            if (pickedPrefab == null)
+                continue;
+
+            randomOffset = Random.onUnitSphere;
+            randomOffset.y = 0;
+            randomOffset.Normalize();
+
+            newObject = Object.Instantiate(pickedPrefab, centerPosition + fillingPos + randomOffset * Random.Range(0, randomPositionAmplitude), Quaternion.Euler(0, Random.Range(0f, 360f), 0));
         }
 
         giantConstruction.GenerateNeededResourcesDictionary(GenerateObjective());
@@ -122,6 +145,38 @@ public class WorldGenerationManager
         int probaCounter = 0;
 
         foreach (WorldElementPrefabWithProbability elementWithProba in allPrefabs)
+        {
+            probaCounter += elementWithProba.probability;
+            if (randomProbability < probaCounter)
+            {
+                pickedPrefab = elementWithProba.prefab;
+                break;
+            }
+        }
+
+        return pickedPrefab;
+    }
+
+    public int GetTotalFillObjectsProbability()
+    {
+        int totalProba = 0;
+
+        foreach (WorldElementPrefabWithProbability elementWithProba in fillingPrefabs)
+            totalProba += elementWithProba.probability;
+
+        return totalProba;
+    }
+    int totalFillProbability = 0;
+
+    public WorldElementPrefab GetRandomFillElementPrefab()
+    {
+        WorldElementPrefab pickedPrefab = null;
+
+        int randomProbability = Random.Range(0, totalFillProbability);
+
+        int probaCounter = 0;
+
+        foreach (WorldElementPrefabWithProbability elementWithProba in fillingPrefabs)
         {
             probaCounter += elementWithProba.probability;
             if (randomProbability < probaCounter)

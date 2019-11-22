@@ -104,11 +104,21 @@ MonoBehaviour:
     - prefab: {fileID: 378345663568739344, guid: bf3c7dc1d2389f24dbfdd3782d2057a4,
         type: 3}
       probability: 50
+    fillingPrefabs:
+    - prefab: {fileID: 378345663568739344, guid: 6b6f73cc22abb04439400f2028155cbd,
+        type: 3}
+      probability: 20
+    - prefab: {fileID: 378345663568739344, guid: aab4193aae9d87142ad4318faf5fe754,
+        type: 3}
+      probability: 30
+    - prefab: {fileID: 378345663568739344, guid: 62cb6cda027f48841a92464dc3ca04ee,
+        type: 3}
+      probability: 50
     worldElementsSize: 4
     worldElementsSpacing: 0
     randomPositionAmplitude: 0
     minimumDistanceWithCenter: 5
-    worldFillingAmount: 1
+    worldFillingAmount: 0.8
     maximumNumberOfWorldElements: 15
     phPrefab: {fileID: 378345663568739344, guid: bf3c7dc1d2389f24dbfdd3782d2057a4,
       type: 3}
@@ -122,3 +132,4 @@ MonoBehaviour:
   resourcesInformationsLibrary: {fileID: 11400000, guid: ae4515cd1637e394b986f91ccb57ba5f,
     type: 2}
   allGameObjectsParent: {fileID: 0}
+  gameAreaRadius: 7.5
