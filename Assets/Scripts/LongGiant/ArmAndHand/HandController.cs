@@ -111,13 +111,10 @@ public class HandController : MonoBehaviour
             Camera cam = Camera.main;
             Ray ray = cam.ScreenPointToRay(touch.position);
 
-            SetJointActive(false);
-            grabbedObj.GetComponent<Rigidbody>().useGravity = true;
-
-            StartCoroutine(CollisionsCoroutine(grabbedObj.GetComponent<Collider>()));
-
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
             {
+                if (hit.collider == grabbedObj.GetComponent<Collider>()) return;
+
                 grabbedObj.Throw((hit.point - grabbedObj.transform.position).normalized, throwForce);
 
                 handBody.AddForce((hit.point - grabbedObj.transform.position).normalized * 500, ForceMode.Impulse);
@@ -128,6 +125,11 @@ public class HandController : MonoBehaviour
 
                 handBody.AddForce(ray.direction * 500, ForceMode.Impulse);
             }
+
+            SetJointActive(false);
+            grabbedObj.GetComponent<Rigidbody>().useGravity = true;
+
+            StartCoroutine(CollisionsCoroutine(grabbedObj.GetComponent<Collider>()));
 
             grabbedObj = null;
 
