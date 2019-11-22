@@ -258,6 +258,7 @@ GameObject:
   - component: {fileID: 20155940112608238}
   - component: {fileID: 114963366853050710}
   - component: {fileID: 114876698896786350}
+  - component: {fileID: 3017517498523776942}
   m_Layer: 0
   m_Name: First Person Camera
   m_TagString: MainCamera
@@ -353,6 +354,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BackgroundMaterial: {fileID: 2100000, guid: 03ad0130a037647aeb60218f61aca114, type: 2}
+--- !u!81 &3017517498523776942
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637996540812124}
+  m_Enabled: 1
 --- !u!1 &1772147192650458
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,12 +664,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1057710923592022136, guid: eb9a4e40f1d98f846a053cc82864ed32,
+    - target: {fileID: 1057710923592022087, guid: eb9a4e40f1d98f846a053cc82864ed32,
         type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 20155940112608238}
-    - target: {fileID: 1057710923592022087, guid: eb9a4e40f1d98f846a053cc82864ed32,
+    - target: {fileID: 1057710923592022136, guid: eb9a4e40f1d98f846a053cc82864ed32,
         type: 3}
       propertyPath: cam
       value: 
