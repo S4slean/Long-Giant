@@ -7,8 +7,8 @@ public class HumanSpawningManager
 {
     [Header("Humans Prefabs")]
     [SerializeField] List<HumanPrefabWithProbability> allHumanPrefabsWithSpawnProbability = new List<HumanPrefabWithProbability>();
-    [SerializeField] int maximumNumberOfHumans = 20;
-    int currentNumberOfHumans = 0;
+    [SerializeField] public int maximumNumberOfHumans = 20;
+    public int currentNumberOfHumans = 0;
     public int GetTotalProbability()
     {
         int totalProba = 0;

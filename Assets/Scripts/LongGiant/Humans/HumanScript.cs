@@ -13,6 +13,7 @@ public class HumanScript : PhysicalObjectScript
         GameManager.gameManager.OnGameWin -= Flee;
     }
 
+    float maxHumans = 0;
     public override void SetUp()
     {
         GameManager gameManager = GameManager.gameManager;
@@ -24,6 +25,8 @@ public class HumanScript : PhysicalObjectScript
         attackFrequenceSystem = new FrequenceSystem(1 / timeBetweenTwoAttack);
         attackFrequenceSystem.SetUp(StartAttack);
         attackFrequenceSystem.SetFrequenceProgression(0.2f);
+
+        maxHumans = spawningManager.maximumNumberOfHumans;
 
         if (humanWeapon != null)
         {
@@ -171,14 +174,26 @@ public class HumanScript : PhysicalObjectScript
 
         if (preparingAttackSoundSource != null)
         {
-            preparingAttackSoundSource.pitch = Random.Range(0.9f, 1.2f);
-            preparingAttackSoundSource.Play();
+            float numberOfHumans = GameManager.gameManager.GetHumanSpawningManager.currentNumberOfHumans;
+
+            float proba = numberOfHumans > 0 ? Mathf.Clamp(1 - ((numberOfHumans - 1)/(maxHumans/2)), 0.2f, 1) : 1;
+            float random = Random.Range(0f, 1f);
+
+            if (random < proba)
+            {
+                playAttackSound = true;
+                preparingAttackSoundSource.pitch = Random.Range(0.9f, 1.2f);
+                preparingAttackSoundSource.Play();
+            }
+            else
+                playAttackSound = false;
         }
     }
+    bool playAttackSound = false;
 
     public void LaunchTrueAttack()
     {
-        if (attackSoundSource != null)
+        if (attackSoundSource != null && playAttackSound)
         {
             attackSoundSource.pitch = Random.Range(0.9f, 1.2f);
             attackSoundSource.Play();
