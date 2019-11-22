@@ -152,7 +152,7 @@ public class HandController : MonoBehaviour
 
     IEnumerator InteractionCoroutine(PhysicalObjectScript physObj)
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(.5f);
 
         if (physObj == null) yield break;
 
