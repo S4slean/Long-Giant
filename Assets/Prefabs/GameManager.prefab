@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c021b64d5e12f46a79114d390e6818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameFinished: 0
   resourcesManager:
     allResourcesPrefabs:
     - resourceType: 0
@@ -88,8 +89,8 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    minimumSpawningRate: 0.1
-    maximumSpawningRate: 0.2
+    minimumSpawningRate: 0.2
+    maximumSpawningRate: 0.5
   worldGenerationManager:
     giantConstructionPrefab: {fileID: 611733609121576622, guid: e550095d2faca8f42aab8b52a2d32ac7,
       type: 3}
@@ -118,7 +119,6 @@ MonoBehaviour:
       weight: 0.25
     - resourceType: 2
       weight: 0.3
-  giantConstruction: {fileID: 0}
-  allGameObjectsParent: {fileID: 0}
   resourcesInformationsLibrary: {fileID: 11400000, guid: ae4515cd1637e394b986f91ccb57ba5f,
     type: 2}
+  allGameObjectsParent: {fileID: 0}
