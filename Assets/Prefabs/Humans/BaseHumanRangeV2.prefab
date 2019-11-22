@@ -768,7 +768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectBody: {fileID: 8623977329504294227}
   physicalObjectInteractionsType: 3
-  minimumForceToBeDestroyed: 5
+  minimumForceToBeDestroyed: 7.5
   objectDamagingMass: 0.3
   objectBodyMass: 0.3
   minimumRotationSpeedOnThrow: 180
@@ -778,11 +778,11 @@ MonoBehaviour:
   attackType: 1
   timeBetweenTwoAttack: 4
   damageAmount: 2
-  minDistanceWithConstruction: 6
+  minDistanceWithConstruction: 4.5
   meleeAttackDistance: 5.5
   projectilePrefab: {fileID: 1223247065104284961, guid: 44ce0a680ff5bf544b5faeffa541c09a,
     type: 3}
-  rangeAttackDistance: 8
+  rangeAttackDistance: 5.5
   rangeShootingOffset: 0.1
   rangeShootingForce: 8
   humanWeapon: {fileID: 0}

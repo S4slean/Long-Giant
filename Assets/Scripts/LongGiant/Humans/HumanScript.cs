@@ -113,11 +113,24 @@ public class HumanScript : PhysicalObjectScript
 
     public void UpdateMove()
     {
+        if (delayAfterSpawn > 0)
+        {
+            delayAfterSpawn -= Time.deltaTime;
+            Debug.Log(delayAfterSpawn);
+
+            if (delayAfterSpawn < 0)
+                delayAfterSpawn = 0;
+
+            return;
+        }
+
         Vector3 moveDirection = giantConstruction.transform.position - transform.position;
         moveDirection.y = 0;
-        Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : GetDistanceWithGiant < minDistanceWithConstruction ? -1 : 1);
+        Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : GetDistanceWithGiant < minDistanceWithConstruction ? -0.75f : 1);
         move.y = objectBody.velocity.y;
         objectBody.velocity = move;
+
+        //Debug.Log(GetDistanceWithGiant);
     }
 
     public bool NeedToMoveTowardTarget
@@ -292,7 +305,7 @@ public class HumanScript : PhysicalObjectScript
         {
             UpdateMove();
 
-            if (!isWalking)
+            if (!isWalking && delayAfterSpawn == 0)
             {
                 isWalking = true;
                 if (humanAnimator != null)
@@ -301,6 +314,8 @@ public class HumanScript : PhysicalObjectScript
         }
         else
         {
+            objectBody.velocity = new Vector3(0, objectBody.velocity.y, 0);
+
             if (isWalking)
             {
                 isWalking = false;
@@ -311,6 +326,8 @@ public class HumanScript : PhysicalObjectScript
             UpdateAttackSystem();
         }
     }
+
+    float delayAfterSpawn = 0.75f;
 }
 
 public enum HumanAttackType
