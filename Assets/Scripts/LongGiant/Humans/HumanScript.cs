@@ -5,7 +5,8 @@ public class HumanScript : PhysicalObjectScript
 {
     private void OnEnable()
     {
-        GameManager.gameManager.OnGameWin += Flee;    }
+        GameManager.gameManager.OnGameWin += Flee;
+    }
 
     private void OnDisable()
     {
@@ -17,8 +18,6 @@ public class HumanScript : PhysicalObjectScript
         GameManager gameManager = GameManager.gameManager;
 
         base.SetUp();
-
-        //GetAllWeaponColliders();
 
         giantConstruction = gameManager.GetGiantConstruction;
         spawningManager = gameManager.GetHumanSpawningManager;
@@ -109,8 +108,6 @@ public class HumanScript : PhysicalObjectScript
         Vector3 move = moveDirection.normalized * moveSpeed * Time.deltaTime * (fleeing ? -1.5f : 1);
         move.y = objectBody.velocity.y;
         objectBody.velocity = move;
-
-        Debug.DrawRay(transform.position, moveDirection, Color.red);
     }
 
     public bool NeedToMoveTowardTarget
@@ -239,11 +236,6 @@ public class HumanScript : PhysicalObjectScript
 
     public override void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            StopAct();
-        }
-
         base.Update();
 
         if (pendingDestroy)
