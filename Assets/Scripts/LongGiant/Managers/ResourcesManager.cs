@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manager that holds references to all of the game's Resources' prefabs
+/// </summary>
 [System.Serializable]
 public class ResourcesManager 
 {
@@ -9,6 +12,10 @@ public class ResourcesManager
     [SerializeField] List<ResourcePrefabWithType> allResourcesPrefabs = new List<ResourcePrefabWithType>();
 
     Dictionary<ResourceType, PhysicalObjectResourceScript> resourcesPrefabsDictionnary = new Dictionary<ResourceType, PhysicalObjectResourceScript>();
+    
+    /// <summary>
+    /// Initialize the dictionary with the assigned resources prefabs
+    /// </summary>
     public void SetUpResourcesDictionnary()
     {
         resourcesPrefabsDictionnary = new Dictionary<ResourceType, PhysicalObjectResourceScript>();
@@ -16,6 +23,11 @@ public class ResourcesManager
             resourcesPrefabsDictionnary.Add(prefabWithType.resourceType, prefabWithType.prefab);
     }
 
+    /// <summary>
+    /// Returns the prefab linked to a specific Resource type
+    /// </summary>
+    /// <param name="resourceType"></param>
+    /// <returns></returns>
     public PhysicalObjectResourceScript GetResourcePrefab(ResourceType resourceType)
     {
         if (resourcesPrefabsDictionnary.ContainsKey(resourceType))
@@ -25,6 +37,9 @@ public class ResourcesManager
     }
 }
 
+/// <summary>
+/// Bindds a Resource type to a Resource Prefab
+/// </summary>
 [System.Serializable]
 public struct ResourcePrefabWithType
 {

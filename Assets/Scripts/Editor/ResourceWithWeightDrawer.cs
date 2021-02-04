@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Drawer used to associate a Resource with a certain probability weight
+/// </summary>
 [CustomPropertyDrawer(typeof(ResourceWithWeight))]
 public class ResourceWithWeightDrawer : PropertyDrawer
 {
@@ -13,7 +16,6 @@ public class ResourceWithWeightDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        //base.OnGUI(position, property, label);
         float lineHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
         float spaceBewteen = 10f;

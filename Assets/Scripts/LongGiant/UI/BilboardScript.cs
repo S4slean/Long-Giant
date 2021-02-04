@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A simple behavior that constantly looks at the camera location.
+/// </summary>
 public class BilboardScript : MonoBehaviour
 {
     Camera mainCamera;

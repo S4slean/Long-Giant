@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Drawer used to associate a Resource type with a display name and sprite
+/// </summary>
 [CustomPropertyDrawer(typeof(ResourceDisplayInformations))]
 public class ResourcesDisplayInformationsDrawer : PropertyDrawer
 {

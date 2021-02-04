@@ -10,6 +10,9 @@ using GoogleARCore.Examples.Common;
 using Input = GoogleARCore.InstantPreviewInput;
 #endif
 
+/// <summary>
+/// Script handling most of the Giant's Hand behaviour - Receives player inputs
+/// </summary>
 public class HandController : MonoBehaviour
 {
     public float throwForce;
@@ -31,7 +34,7 @@ public class HandController : MonoBehaviour
 
     PhysicalObjectInteractionsType lastInteractionType;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         handPlacer = GetComponentInChildren<HandPlacerUtility>();
@@ -46,9 +49,10 @@ public class HandController : MonoBehaviour
         handCallback.OnCollision -= OnHandCollision;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
+        //We firstly check if the hand is in Grabbing State without having any reference to a grabbed object
         if (state == State.Grabbing)
         {
             // Grabbed object has been destroyed
@@ -63,6 +67,7 @@ public class HandController : MonoBehaviour
 
         Touch touch;
 
+        //Return if no input has not been started this frame
         if (Input.touchCount != 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
             return;
@@ -74,6 +79,7 @@ public class HandController : MonoBehaviour
             return;
         }
 
+        //If hand was reaching for an object, a second input will set it in Smash mode
         if (state == State.Reaching)
         {
             state = State.Smash;
@@ -82,6 +88,7 @@ public class HandController : MonoBehaviour
             return;
         }
 
+        //If the hand is in Smash State (base state), we start reaching for an object on the world hit position
         if (state == State.Smash)
         {
             RaycastHit hit;
@@ -105,12 +112,14 @@ public class HandController : MonoBehaviour
             return;
         }
 
+        //If the hand is in Grabbing State, that means he's holding an object and should throw it
         if (state == State.Grabbing)
         {
             RaycastHit hit;
             Camera cam = Camera.main;
             Ray ray = cam.ScreenPointToRay(touch.position);
 
+            //We call the Throw method on the grabbed object to give it velocity
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask.value))
             {
                 if (hit.collider == grabbedObj.GetComponent<Collider>()) return;
@@ -127,6 +136,7 @@ public class HandController : MonoBehaviour
             }
 
             SetJointActive(false);
+            //We put back gravity on the previously grabbed object
             grabbedObj.GetComponent<Rigidbody>().useGravity = true;
 
             StartCoroutine(CollisionsCoroutine(grabbedObj.GetComponent<Collider>()));
@@ -170,6 +180,10 @@ public class HandController : MonoBehaviour
 #endif
     }
 
+    /// <summary>
+    /// Handles collision with an object in Reaching State, to try to grab the hit object if it is a Physical Object
+    /// </summary>
+    /// <param name="col"></param>
     public void OnHandCollision(Collision col)
     {
         if (state == State.Reaching)
@@ -182,6 +196,7 @@ public class HandController : MonoBehaviour
 
                 lastInteractionType = grabbedObj.physicalObjectInteractionsType;
 
+                //We disable Physical Object gravity to keep it in hand 
                 Rigidbody objRB = physObj.GetComponent<Rigidbody>();
                 objRB.useGravity = false;
 

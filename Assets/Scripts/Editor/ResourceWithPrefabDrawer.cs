@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Drawer used to associate a Resource with its specific prefab
+/// </summary>
 [CustomPropertyDrawer(typeof(ResourcePrefabWithType))]
 public class ResourceWithPrefabDrawer : PropertyDrawer
 {
@@ -13,7 +16,6 @@ public class ResourceWithPrefabDrawer : PropertyDrawer
 
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        //base.OnGUI(position, property, label);
         float lineHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
         float spaceBewteen = 10f;
